@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* --- ⛔ BLOCK: ส่วนซ่อนลูกศรช่องตัวเลข (บังคับทำงาน) ⛔ --- */
+@layer base {
+  /* สำหรับ Chrome, Safari, Edge, Opera */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important; 
+    display: none !important;
+  }
+
+  /* สำหรับ Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield !important;
+    appearance: none !important;
+  }
+}
+/* --- END BLOCK --- */
+
+body {
+  background-color: #050505;
+  color: #ffffff;
+}
