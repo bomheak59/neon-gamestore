@@ -13,8 +13,8 @@ export default async function handler(req, res) {
     const order = await prisma.order.findUnique({ where: { id: orderId } });
     if (!order) return res.status(404).json({ error: 'ไม่พบรายการสั่งซื้อ' });
 
-    // 🔴 แก้ไข URL ตรงนี้ (ลองตัด /TPG ออก)
-   const tmpayEndpoint = 'http://203.146.127.112/TPG/backend.php';
+    // 🔴 แก้ไข URL ตรงนี้ (ใช้ตัวนี้ชัวร์กว่า)
+   const tmpayEndpoint = 'http://www.tmpay.net/TPG/backend.php';
     
     const params = new URLSearchParams({
       merchant_id: merchantId,
@@ -32,9 +32,9 @@ export default async function handler(req, res) {
     
     console.log("TMPAY Response:", resultText);
 
-    // เช็คว่ายัง 404 อยู่ไหม
-    if (resultText.includes('<title>404 Not Found</title>') || resultText.includes('Not Found')) {
-        throw new Error(`ไม่พบ URL ของ TMPAY (ลิงก์ ${tmpayEndpoint} ผิด) - โปรดติดต่อแอดมิน TMPAY`);
+    // ถ้ายังเจอ 404 อีก แสดงว่า Server เขาปิดรับ Request นี้
+    if (resultText.includes('404 Not Found')) {
+        throw new Error('ลิงก์เชื่อมต่อ TMPAY ไม่ถูกต้อง (404) - กรุณาติดต่อแอดมินร้านค้าเพื่อขอ URL ล่าสุด');
     }
 
     if (resultText.startsWith('SUCCEED')) {
