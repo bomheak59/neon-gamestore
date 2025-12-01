@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const order = await prisma.order.findUnique({ where: { id: orderId } });
     if (!order) return res.status(404).json({ error: 'ไม่พบรายการสั่งซื้อ' });
 
-    // ใช้ URL นี้ (ที่เทสใน Browser แล้วเจอ)
+    // ✅ ใช้ลิงก์นี้ (HTTP) เพราะคุณทดสอบใน Browser แล้วว่ามันมีตัวตน
     const tmpayEndpoint = 'http://www.tmpay.net/TPG/backend.php';
     
     const params = new URLSearchParams({
