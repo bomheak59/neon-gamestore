@@ -25,6 +25,10 @@ model Product {
   // ส่วนลด (%) ที่เพิ่มมาล่าสุด
   discount    Int      @default(0) 
 
+ images      String   @default("[]")
+
+ options     String   @default("[]")
+
   stockItems  StockItem[]
   orderItems  OrderItem[]
   createdAt   DateTime @default(now())
