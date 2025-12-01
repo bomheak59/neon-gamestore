@@ -13,8 +13,8 @@ export default async function handler(req, res) {
     const order = await prisma.order.findUnique({ where: { id: orderId } });
     if (!order) return res.status(404).json({ error: 'ไม่พบรายการสั่งซื้อ' });
 
-    // 🔴 แก้ไข URL ตรงนี้ (ใช้ตัวนี้ชัวร์กว่า)
-   const tmpayEndpoint = 'http://www.tmpay.net/TPG/backend.php';
+    // ✅ ใช้ลิงก์นี้ (HTTP) เพราะคุณทดสอบใน Browser แล้วว่ามันมีตัวตน
+    const tmpayEndpoint = 'http://www.tmpay.net/TPG/backend.php';
     
     const params = new URLSearchParams({
       merchant_id: merchantId,
@@ -25,23 +25,29 @@ export default async function handler(req, res) {
     if (channel) params.append('channel', channel);
 
     const requestUrl = `${tmpayEndpoint}?${params.toString()}`;
-    console.log("Sending to TMPAY:", requestUrl); 
+    console.log("Sending to TMPAY:", requestUrl);
 
     const tmpayRes = await fetch(requestUrl);
-    const resultText = await tmpayRes.text(); 
+    const resultText = await tmpayRes.text();
     
     console.log("TMPAY Response:", resultText);
 
-    // ถ้ายังเจอ 404 อีก แสดงว่า Server เขาปิดรับ Request นี้
+    // 🔥 ดักจับ Error จาก TMPAY 🔥
+    if (resultText.includes('DB_IS_NOT_READY')) {
+        return res.status(503).json({ error: 'ระบบเติมเงิน TMPAY ปิดปรับปรุงชั่วคราว (DB Error) - กรุณาลองใหม่ภายหลัง' });
+    }
+
     if (resultText.includes('404 Not Found')) {
-        throw new Error('ลิงก์เชื่อมต่อ TMPAY ไม่ถูกต้อง (404) - กรุณาติดต่อแอดมินร้านค้าเพื่อขอ URL ล่าสุด');
+        // ถ้ายังเจอ 404 ให้ลองติดต่อ Support TMPAY เพื่อขอ URL ใหม่
+        throw new Error('ไม่พบ URL ปลายทางของ TMPAY (404)');
     }
 
     if (resultText.startsWith('SUCCEED')) {
        await prisma.order.update({ where: { id: orderId }, data: { status: 'VERIFYING' } });
-       return res.status(200).json({ success: true, message: 'ส่งข้อมูลสำเร็จ' });
+       return res.status(200).json({ success: true });
     } else {
-       return res.status(400).json({ error: `TMPAY Error: ${resultText}` });
+       // ส่ง Error อื่นๆ กลับไปบอกลูกค้า (เช่น บัตรผิด)
+       return res.status(400).json({ error: `เกิดข้อผิดพลาด: ${resultText}` });
     }
 
   } catch (error) {
