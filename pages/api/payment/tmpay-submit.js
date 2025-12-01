@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const order = await prisma.order.findUnique({ where: { id: orderId } });
     if (!order) return res.status(404).json({ error: 'ไม่พบรายการสั่งซื้อ' });
 
-    // ✅ ใช้ลิงก์นี้ (HTTP) เพราะคุณทดสอบใน Browser แล้วว่ามันมีตัวตน
+    // ✅ แก้ไขลิงก์ให้ถูกต้องตรงนี้ (ต้องมี /TPG และใช้ http)
     const tmpayEndpoint = 'http://www.tmpay.net/TPG/backend.php';
     
     const params = new URLSearchParams({
@@ -25,29 +25,34 @@ export default async function handler(req, res) {
     if (channel) params.append('channel', channel);
 
     const requestUrl = `${tmpayEndpoint}?${params.toString()}`;
-    console.log("Sending to TMPAY:", requestUrl);
+    console.log("Target URL:", requestUrl); // เช็คใน Log ได้เลยว่ายิงไปถูกไหม
 
     const tmpayRes = await fetch(requestUrl);
     const resultText = await tmpayRes.text();
     
     console.log("TMPAY Response:", resultText);
 
-    // 🔥 ดักจับ Error จาก TMPAY 🔥
+    // 🔥 ดักจับ Error ต่างๆ ให้ละเอียด 🔥
+    
+    // 1. กรณีระบบ TMPAY ล่ม (Database Error)
     if (resultText.includes('DB_IS_NOT_READY')) {
-        return res.status(503).json({ error: 'ระบบเติมเงิน TMPAY ปิดปรับปรุงชั่วคราว (DB Error) - กรุณาลองใหม่ภายหลัง' });
+        return res.status(503).json({ 
+            error: 'ขออภัย ระบบเติมเงิน TMPAY ปิดปรับปรุงชั่วคราว (Database Error) - กรุณาลองใหม่ภายหลัง' 
+        });
     }
 
-    if (resultText.includes('404 Not Found')) {
-        // ถ้ายังเจอ 404 ให้ลองติดต่อ Support TMPAY เพื่อขอ URL ใหม่
-        throw new Error('ไม่พบ URL ปลายทางของ TMPAY (404)');
+    // 2. กรณี URL ผิด (404)
+    if (resultText.includes('Not Found') || resultText.includes('<title>404</title>')) {
+        throw new Error(`ไม่พบ URL ปลายทาง (404) - ลิงก์ ${tmpayEndpoint} อาจผิดพลาด`);
     }
 
+    // 3. กรณีส่งสำเร็จ (รับเรื่องแล้ว)
     if (resultText.startsWith('SUCCEED')) {
        await prisma.order.update({ where: { id: orderId }, data: { status: 'VERIFYING' } });
        return res.status(200).json({ success: true });
     } else {
-       // ส่ง Error อื่นๆ กลับไปบอกลูกค้า (เช่น บัตรผิด)
-       return res.status(400).json({ error: `เกิดข้อผิดพลาด: ${resultText}` });
+       // 4. กรณีอื่นๆ (เช่น รหัสบัตรผิด, รหัสร้านค้าผิด)
+       return res.status(400).json({ error: `เติมเงินไม่สำเร็จ: ${resultText}` });
     }
 
   } catch (error) {
