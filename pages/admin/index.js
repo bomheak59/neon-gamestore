@@ -1,5 +1,6 @@
 import AdminLayout from '@/components/AdminLayout';
 import { DollarSign, ShoppingCart, Package, Users } from 'lucide-react';
+import { jwtVerify } from 'jose'; // 👈 1. เพิ่ม import นี้
 
 export default function AdminDashboard({ stats }) {
   return (
@@ -21,7 +22,6 @@ export default function AdminDashboard({ stats }) {
       <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden">
         <div className="p-6 border-b border-white/10 flex justify-between items-center">
           <h3 className="font-bold text-lg text-white">คำสั่งซื้อล่าสุด</h3>
-          <button className="text-cyan-400 text-sm hover:underline">ดูทั้งหมด</button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-400">
@@ -36,16 +36,17 @@ export default function AdminDashboard({ stats }) {
             <tbody>
               {stats.recentOrders.map((order) => (
                 <tr key={order.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-4 font-mono text-white">{order.id.split('-')[0]}...</td>
+                  <td className="p-4 font-mono text-white">{order.id.substring(0, 8)}...</td>
                   <td className="p-4 text-cyan-400 font-bold">฿{order.totalAmount}</td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded text-xs font-bold ${
-                      order.status === 'PAID' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                      order.status === 'PAID' ? 'bg-green-500/20 text-green-400' : 
+                      order.status === 'VERIFYING' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-red-500/20 text-red-400'
                     }`}>
                       {order.status}
                     </span>
                   </td>
-                  {/* 👇👇👇 แก้ไขตรงนี้ครับ (บังคับ 'th-TH') 👇👇👇 */}
                   <td className="p-4">
                     {new Date(order.createdAt).toLocaleDateString('th-TH')}
                   </td>
@@ -59,7 +60,6 @@ export default function AdminDashboard({ stats }) {
   );
 }
 
-// Component การ์ดเล็กๆ
 function StatCard({ title, value, icon: Icon, color }) {
   const colors = {
     cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
@@ -81,7 +81,33 @@ function StatCard({ title, value, icon: Icon, color }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  // 🔒 2. เพิ่มระบบป้องกัน: เช็คบัตรผ่านก่อนดึงข้อมูล
+  const { req } = context;
+  const token = req.cookies.admin_token;
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    await jwtVerify(token, secret);
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false,
+      },
+    };
+  }
+
+  // ✅ 3. ถ้าผ่านด่านมาได้ ค่อยดึงข้อมูล
   const prisma = (await import('@/lib/prisma')).default;
   
   const orders = await prisma.order.findMany({ orderBy: { createdAt: 'desc' } });
@@ -97,7 +123,7 @@ export async function getServerSideProps() {
         totalRevenue,
         totalOrders: orders.length,
         totalProducts: productsCount,
-        pendingOrders: orders.filter(o => o.status === 'PENDING').length,
+        pendingOrders: orders.filter(o => o.status === 'VERIFYING' || o.status === 'PENDING').length,
         recentOrders: JSON.parse(JSON.stringify(orders.slice(0, 5))),
       }
     }

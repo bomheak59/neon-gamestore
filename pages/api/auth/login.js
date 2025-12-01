@@ -2,23 +2,27 @@ import { SignJWT } from 'jose';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
+
   const { username, password } = req.body;
 
-  // ตรวจสอบรหัสผ่านกับ .env
+  // 1. ตรวจสอบ User/Pass จาก .env
   if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
     
-    // สร้าง JWT Token (บัตรผ่าน)
+    // 2. สร้าง JWT Token (บัตรผ่าน)
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const token = await new SignJWT({ role: 'admin' })
+    const token = await new SignJWT({ role: 'admin' }) 
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('24h') // บัตรมีอายุ 24 ชม.
+      .setExpirationTime('24h') // บัตรหมดอายุใน 24 ชม.
       .sign(secret);
 
-    // ฝัง Cookie ลงใน Browser (HttpOnly เพื่อความปลอดภัยสูงสุด JavaScript อ่านไม่ได้)
+    // 3. ตั้งค่าความปลอดภัยของ Cookie (Layer 3)
+    // ถ้าเป็น Production (เว็บจริง) ให้ใส่ Secure; เพื่อบังคับ HTTPS
+    const isProduction = process.env.NODE_ENV === 'production';
+    
     res.setHeader(
       'Set-Cookie',
-      `admin_token=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400;` // 86400 วิ = 1 วัน
+      `admin_token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; ${isProduction ? 'Secure;' : ''}`
     );
 
     return res.status(200).json({ success: true });

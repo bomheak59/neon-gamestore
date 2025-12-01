@@ -1,5 +1,5 @@
 export default function handler(req, res) {
-  // ลบ Cookie โดยการตั้งเวลาให้หมดอายุทันที
+  // ล้าง Cookie โดยตั้งเวลาหมดอายุทันที
   res.setHeader(
     'Set-Cookie',
     'admin_token=; Path=/; HttpOnly; Max-Age=0;'

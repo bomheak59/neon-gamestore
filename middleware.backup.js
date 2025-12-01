@@ -4,46 +4,57 @@ import { jwtVerify } from 'jose';
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // 1. ตรวจสอบโหมด Maintenance (ถ้ามี)
-  const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true';
-  if (isMaintenanceMode && !pathname.startsWith('/maintenance') && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
-    return NextResponse.rewrite(new URL('/maintenance', request.url));
-  }
+  // -------------------------------------------------------------
+  // 🔒 ตั้งค่าความปลอดภัย
+  // -------------------------------------------------------------
+  const adminPaths = ['/admin', '/api/admin', '/api/product/create', '/api/product/update', '/api/product/delete']; // เส้นทางต้องห้าม
+  const publicPaths = ['/admin/login']; // ข้อยกเว้น
 
-  // 2. ระบบป้องกันหน้า Admin (Admin Guard)
-  // ถ้าพยายามเข้าหน้า /admin...
-  if (pathname.startsWith('/admin')) {
-    
-    // ข้อยกเว้น: ถ้าเข้าหน้า Login ไม่ต้องตรวจ (เดี๋ยว Loop นรก)
-    if (pathname === '/admin/login') {
-      return NextResponse.next();
-    }
+  // เช็คว่าเป็นเส้นทางที่ต้องป้องกันหรือไม่?
+  const isProtected = adminPaths.some(path => pathname.startsWith(path));
+  const isPublic = publicPaths.some(path => pathname.startsWith(path));
 
-    // หา Cookie ที่ชื่อ 'admin_token'
+  if (isProtected && !isPublic) {
+    // 1. ตรวจหาบัตรผ่าน (Cookie)
     const token = request.cookies.get('admin_token')?.value;
 
-    if (!token) {
-      // ถ้าไม่มีบัตรผ่าน -> เตะไปหน้า Login
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
+    // ฟังก์ชันดีดออก (Redirect หรือ Error)
+    const reject = () => {
+        // ถ้าเป็น API ให้ตอบ JSON Error
+        if (pathname.startsWith('/api')) {
+            return NextResponse.json({ error: 'Unauthorized: กรุณาเข้าสู่ระบบ' }, { status: 401 });
+        }
+        // ถ้าเป็นหน้าเว็บ ให้ดีดไปหน้า Login
+        return NextResponse.redirect(new URL('/admin/login', request.url));
+    };
+
+    if (!token) return reject();
 
     try {
-      // ตรวจสอบลายเซ็นบัตรผ่าน (Verify JWT)
+      // 2. ตรวจสอบลายเซ็นบัตร (Verify Token)
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       await jwtVerify(token, secret);
-      // ถ้าผ่าน: อนุญาตให้เข้าได้
+      
+      // ✅ ผ่าน: อนุญาตให้เข้า
       return NextResponse.next();
     } catch (error) {
-      // ถ้าบัตรปลอม หรือหมดอายุ -> เตะไปหน้า Login
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+      // ❌ ไม่ผ่าน: บัตรปลอม/หมดอายุ -> ดีดออก
+      return reject();
     }
   }
 
   return NextResponse.next();
 }
 
+// กำหนดให้ Middleware ทำงานกับทุกเส้นทาง (เพื่อให้ชัวร์ว่าดักได้หมด)
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 };
