@@ -22,13 +22,13 @@ export default function Maintenance() {
         <div className="h-1 w-32 bg-red-500 mx-auto mb-6 rounded-full"></div>
 
         <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-          ระบบกำลังอยู่ระหว่างการอัปเกรดครั้งใหญ่ <br/>
-          เพื่อประสบการณ์การใช้งานที่ดียิ่งขึ้น
+          ขออภัยในความไม่สะดวก <br/>
+          ระบบกำลังอยู่ระหว่างการปรับปรุงชั่วคราว
         </p>
 
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 border border-gray-800 text-gray-500 text-sm font-mono">
           <ShieldAlert size={16} />
-          <span>ESTIMATED TIME: COMING SOON</span>
+          <span>STATUS: MAINTENANCE</span>
         </div>
       </div>
     </div>

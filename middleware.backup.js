@@ -5,32 +5,33 @@ export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   // =========================================================
-  // 🔐 ส่วนที่ 1: ระบบความปลอดภัยหลังบ้าน (Admin Security)
+  // 🔒 ส่วนที่ 1: ระบบความปลอดภัยหลังบ้าน (Admin Security)
   // =========================================================
   
-  // รายชื่อเส้นทางที่ต้องป้องกัน
-  const protectedPaths = ['/admin', '/api/product', '/api/order', '/api/admin'];
-  const isProtected = protectedPaths.some(path => pathname.startsWith(path));
-  const isLoginPage = pathname === '/admin/login';
+  // เช็คว่าเป็นเส้นทางที่ต้องป้องกันหรือไม่? (Admin + API หลังบ้าน)
+  if (pathname.startsWith('/admin')) {
+    
+    // ข้อยกเว้น: หน้า Login เข้าได้เลย
+    if (pathname === '/admin/login') {
+      return NextResponse.next();
+    }
 
-  // ถ้าเข้าโซนอันตราย และไม่ใช่หน้า Login
-  if (isProtected && !isLoginPage) {
+    // ตรวจหาบัตรผ่าน (Cookie)
     const token = request.cookies.get('admin_token')?.value;
 
-    // ฟังก์ชันดีดออก
+    // ฟังก์ชันดีดออก (Reject)
     const reject = () => {
-      if (pathname.startsWith('/api')) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
       return NextResponse.redirect(new URL('/admin/login', request.url));
     };
 
     if (!token) return reject();
 
     try {
+      // ตรวจสอบลายเซ็นบัตร
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       await jwtVerify(token, secret);
-      // ✅ ถ้าเป็น Admin ผ่านได้เลย (ไม่ต้องไปเช็ค Maintenance ต่อ)
+      
+      // ✅ ถ้าเป็น Admin ตัวจริง -> อนุญาตให้ผ่าน (ไม่ต้องไปเช็ค Maintenance ต่อ)
       return NextResponse.next();
     } catch (error) {
       return reject();
@@ -43,7 +44,7 @@ export async function middleware(request) {
   
   const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true';
 
-  // ถ้าเปิดโหมดปิดปรับปรุงอยู่...
+  // ถ้าเปิดโหมดซ่อมบำรุงอยู่...
   if (isMaintenanceMode) {
     // อนุญาตให้เข้าได้เฉพาะ:
     // 1. หน้า maintenance
@@ -54,10 +55,10 @@ export async function middleware(request) {
       !pathname.startsWith('/maintenance') &&
       !pathname.startsWith('/_next') &&
       !pathname.startsWith('/api') &&
-      !pathname.startsWith('/admin/login') &&
+      !pathname.startsWith('/admin') && // แอดมินต้องเข้าได้
       !pathname.includes('.') // ไฟล์ที่มีนามสกุล
     ) {
-      // ดีดคนทั่วไปไปหน้า maintenance
+      // ดีดลูกค้าทั่วไปไปหน้า maintenance
       return NextResponse.rewrite(new URL('/maintenance', request.url));
     }
   }
@@ -70,6 +71,9 @@ export async function middleware(request) {
   return NextResponse.next();
 }
 
+// กำหนดขอบเขตการทำงาน
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
 };
