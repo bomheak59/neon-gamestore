@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     if (!order) return res.status(404).json({ error: 'ไม่พบรายการสั่งซื้อ' });
 
     // 🔴 แก้ไข URL ตรงนี้ (ลองตัด /TPG ออก)
-    const tmpayEndpoint = 'http://www.tmpay.net/backend.php';
+   const tmpayEndpoint = 'http://203.146.127.112/TPG/backend.php';
     
     const params = new URLSearchParams({
       merchant_id: merchantId,
