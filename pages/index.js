@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { ShoppingCart, Search, Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, Terminal, Search as SearchIcon, CheckCircle, Clock, Headphones, Menu, X } from 'lucide-react';
+import { Search, Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X } from 'lucide-react'; // เพิ่ม Menu, X
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,7 +12,7 @@ import Tilt from 'react-parallax-tilt';
 export default function Home({ products }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State สำหรับเมนูมือถือ
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State เมนูมือถือ
 
   const appKeywords = ['Netflix', 'Youtube', 'Spotify', 'Viu', 'Disney', 'Prime', 'App', 'Canva', 'Office', 'Windows', 'Premium'];
   const safeProducts = products || [];
@@ -60,11 +60,12 @@ export default function Home({ products }) {
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-cyan-500/10 bg-[#050505]/90 backdrop-blur-2xl transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+          
           {/* Logo & Mobile Toggle */}
-          <div className="flex items-center gap-4">
-             {/* ปุ่มเมนูมือถือ (โชว์เฉพาะจอมือถือ) */}
+          <div className="flex items-center gap-3">
+             {/* ปุ่มเมนูมือถือ (โชว์เฉพาะจอเล็ก) */}
              <button 
-                className="lg:hidden text-gray-300 hover:text-white p-1"
+                className="lg:hidden text-gray-300 hover:text-white p-1 active:scale-95 transition-transform"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
              >
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -72,10 +73,11 @@ export default function Home({ products }) {
 
              <Link href="/">
                 <div className="flex items-center gap-2 group cursor-pointer">
-                <div className="relative w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                    <Zap className="text-white w-6 h-6 fill-current relative z-10" />
+                <div className="relative w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                    <Zap className="text-white w-5 h-5 lg:w-6 lg:h-6 fill-current relative z-10" />
                 </div>
-                <span className="font-extrabold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-gray-400">
+                {/* 🔥 ปรับขนาด Font ให้เล็กลงในมือถือ (text-xl) และใหญ่ในคอม (text-3xl) 🔥 */}
+                <span className="font-extrabold text-xl lg:text-3xl tracking-tighter text-white">
                     NEON<span className="text-cyan-400">STORE</span>
                 </span>
                 </div>
@@ -85,18 +87,23 @@ export default function Home({ products }) {
           {/* Desktop Menu (ซ่อนบนมือถือ) */}
           <div className="hidden lg:flex items-center gap-1 text-sm font-bold uppercase tracking-wider text-gray-400">
             <Link href="/"><button className="px-3 py-2 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">หน้าแรก</button></Link>
+            
+            {/* Dropdown 1 */}
             <div className="relative group px-1">
               <button className="flex items-center gap-2 px-3 py-2 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all"><Gamepad2 size={16}/> ซื้อรหัสเกม</button>
               <div className="absolute top-full left-0 w-56 bg-[#0a0a0a] border border-gray-800 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform translate-y-2 group-hover:translate-y-0 overflow-hidden z-50">
                 <div className="p-2 flex flex-col gap-1">{gameIdCategories.map((game) => (<Link key={game} href={`/category/${game}`}><div className="block px-3 py-2 hover:bg-cyan-500/10 hover:text-cyan-400 rounded-lg text-xs font-medium cursor-pointer">{game}</div></Link>))}</div>
               </div>
             </div>
+
+            {/* Dropdown 2 */}
             <div className="relative group px-1">
               <button className="flex items-center gap-2 px-3 py-2 hover:text-purple-400 hover:bg-white/5 rounded-lg transition-all"><Monitor size={16}/> แอพพรีเมียม</button>
               <div className="absolute top-full left-0 w-56 bg-[#0a0a0a] border border-gray-800 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform translate-y-2 group-hover:translate-y-0 overflow-hidden z-50">
                 <div className="p-2 flex flex-col gap-1">{appCategories.map((app) => (<Link key={app} href={`/category/${app}`}><div className="block px-3 py-2 hover:bg-purple-500/10 hover:text-purple-400 rounded-lg text-xs font-medium cursor-pointer">{app}</div></Link>))}</div>
               </div>
             </div>
+
             <Link href="/topup"><button className="flex items-center gap-2 px-3 py-2 hover:text-green-400 hover:bg-white/5 rounded-lg transition-all"><CreditCard size={16}/> เติมเกม</button></Link>
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
@@ -108,14 +115,14 @@ export default function Home({ products }) {
           </div>
         </div>
 
-        {/* 🔥 Mobile Menu Dropdown (แสดงเมื่อกดปุ่ม) 🔥 */}
+        {/* 🔥🔥 Mobile Menu Dropdown (เมนูมือถือ) 🔥🔥 */}
         <AnimatePresence>
             {isMobileMenuOpen && (
                 <motion.div 
                     initial={{ height: 0, opacity: 0 }} 
                     animate={{ height: 'auto', opacity: 1 }} 
                     exit={{ height: 0, opacity: 0 }}
-                    className="lg:hidden bg-[#080808] border-b border-white/10 overflow-hidden"
+                    className="lg:hidden bg-[#0a0a0a] border-b border-white/10 overflow-hidden shadow-2xl"
                 >
                     <div className="p-4 space-y-3">
                         {/* ช่องค้นหาบนมือถือ */}
@@ -123,15 +130,18 @@ export default function Home({ products }) {
                             <input type="text" placeholder="ค้นหาสินค้า..." className="w-full bg-[#151515] border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:border-cyan-500 outline-none" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             <Search className="absolute left-3 top-3.5 w-4 h-4 text-gray-500" />
                         </div>
-                        <hr className="border-white/10 my-2"/>
                         
-                        <Link href="/"><div className="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-bold flex items-center gap-3"><Zap size={18}/> หน้าแรก</div></Link>
-                        <Link href="/topup"><div className="p-3 rounded-lg hover:bg-white/5 text-green-400 font-bold flex items-center gap-3"><CreditCard size={18}/> บริการเติมเกม</div></Link>
-                        
-                        <div className="p-3 text-gray-500 text-xs font-bold uppercase tracking-wider">หมวดหมู่สินค้า</div>
-                        <div className="grid grid-cols-2 gap-2">
-                            {gameIdCategories.map(g => <Link key={g} href={`/category/${g}`}><div className="p-2 bg-white/5 rounded-lg text-center text-xs text-cyan-300">{g}</div></Link>)}
-                            {appCategories.map(a => <Link key={a} href={`/category/${a}`}><div className="p-2 bg-white/5 rounded-lg text-center text-xs text-purple-300">{a}</div></Link>)}
+                        <div className="grid grid-cols-2 gap-2 pt-2">
+                            <Link href="/"><div className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-200 font-bold flex items-center justify-center gap-2"><Zap size={16}/> หน้าแรก</div></Link>
+                            <Link href="/topup"><div className="p-3 rounded-xl bg-green-500/10 hover:bg-green-500/20 text-green-400 font-bold flex items-center justify-center gap-2"><CreditCard size={16}/> เติมเกม</div></Link>
+                        </div>
+
+                        <div className="pt-2">
+                             <p className="text-xs text-gray-500 font-bold uppercase mb-2 ml-1">หมวดหมู่แนะนำ</p>
+                             <div className="flex flex-wrap gap-2">
+                                {gameIdCategories.slice(0,4).map(g => <Link key={g} href={`/category/${g}`}><span className="px-3 py-1 bg-cyan-900/30 border border-cyan-500/30 rounded-full text-xs text-cyan-300">{g}</span></Link>)}
+                                {appCategories.slice(0,4).map(a => <Link key={a} href={`/category/${a}`}><span className="px-3 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-xs text-purple-300">{a}</span></Link>)}
+                             </div>
                         </div>
                     </div>
                 </motion.div>
@@ -139,7 +149,7 @@ export default function Home({ products }) {
         </AnimatePresence>
       </nav>
 
-      {/* ... (ส่วน Marquee, Hero, Product Grid เหมือนเดิม) ... */}
+      {/* ... (Marquee & Hero Section เหมือนเดิม) ... */}
       <div className="relative z-40 bg-black/40 border-y border-cyan-500/30 backdrop-blur-md h-12 flex items-center overflow-hidden">
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm font-extrabold px-6 h-full flex items-center z-10 absolute left-0 shadow-[0_0_25px_rgba(6,182,212,0.6)] clip-path-slant">
            <Bell size={16} className="mr-2 animate-swing"/> ประกาศ
@@ -189,7 +199,7 @@ export default function Home({ products }) {
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mx-auto">
              <motion.div whileHover={{ scale: 1.05 }} className="flex flex-col items-center justify-center bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/50 p-6 rounded-2xl backdrop-blur-sm transition-all group"><div className="bg-cyan-500/20 p-4 rounded-full mb-3"><CheckCircle size={28} className="text-cyan-400"/></div><span className="text-base font-bold text-white">ผู้ขายยืนยันตัวตน</span><span className="text-xs text-gray-500 mt-1">Verified Seller</span></motion.div>
              <motion.div whileHover={{ scale: 1.05 }} className="flex flex-col items-center justify-center bg-white/5 border border-white/10 hover:bg-white/10 hover:border-yellow-500/50 p-6 rounded-2xl backdrop-blur-sm transition-all group"><div className="bg-yellow-500/20 p-4 rounded-full mb-3"><Clock size={28} className="text-yellow-400"/></div><span className="text-base font-bold text-white">ส่งสินค้าอัตโนมัติ</span><span className="text-xs text-gray-500 mt-1">Auto Delivery 24/7</span></motion.div>
-             <motion.div whileHover={{ scale: 1.05 }} className="flex flex-col items-center justify-center bg-white/5 border border-white/10 hover:bg-white/10 hover:border-green-500/50 p-6 rounded-2xl backdrop-blur-sm transition-all group"><div className="bg-green-500/20 p-4 rounded-full mb-3"><Headphones size={28} className="text-green-400"/></div><span className="text-base font-bold text-white">บริการหลังการขาย 24 ชม.</span><span className="text-xs text-gray-500 mt-1">Support Team</span></motion.div>
+             <motion.div whileHover={{ scale: 1.05 }} className="flex flex-col items-center justify-center bg-white/5 border border-white/10 hover:bg-white/10 hover:border-green-500/50 p-6 rounded-2xl backdrop-blur-sm transition-all group"><div className="bg-green-500/20 p-4 rounded-full mb-3"><Headphones size={28} className="text-green-400"/></div><span className="text-base font-bold text-white">บริการหลังการขายตลอด 24 ชั่วโมง</span><span className="text-xs text-gray-500 mt-1">Support Team</span></motion.div>
           </div>
         </div>
       </div>
@@ -237,9 +247,6 @@ export default function Home({ products }) {
                   </Tilt>
               </motion.div>
             ))
-          )}
-          {filteredProducts.length === 0 && products && (
-            <div className="col-span-full text-center py-20 text-gray-500 bg-white/5 rounded-2xl"><p>ไม่พบสินค้าที่คุณค้นหา...</p></div>
           )}
         </motion.div>
       </main>
