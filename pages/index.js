@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Search, Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, Terminal, CheckCircle, Clock, Headphones, Menu, X } from 'lucide-react';
+import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, Terminal, CheckCircle, Clock, Headphones, Menu, X } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -15,7 +15,6 @@ export default function Home({ products }) {
   const router = useRouter();
   
   // State
-  const [searchTerm, setSearchTerm] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [marqueeItems, setMarqueeItems] = useState([]);
 
@@ -23,11 +22,7 @@ export default function Home({ products }) {
   const appKeywords = ['Netflix', 'Youtube', 'Spotify', 'Viu', 'Disney', 'Prime', 'App', 'Canva', 'Office', 'Windows', 'Premium'];
   const safeProducts = products || [];
   
-  // 🔥 กรองสินค้าตามคำค้นหา (Real-time Search) 🔥
-  const filteredProducts = safeProducts.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    p.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // ไม่มีการกรอง Search แล้ว ใช้ safeProducts ได้เลย
 
   const topupCategories = [...new Set(safeProducts.filter(p => p.type === 'TOPUP').map(p => p.category))];
   const appCategories = [...new Set(safeProducts.filter(p => appKeywords.some(keyword => p.category.toLowerCase().includes(keyword.toLowerCase()))).map(p => p.category))];
@@ -110,18 +105,8 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* Search Bar (Desktop) */}
-          <div className="hidden lg:flex relative group w-64">
-             <input 
-                type="text" 
-                placeholder="ค้นหาสินค้า..." 
-                className="w-full bg-[#0a0a0a]/80 border border-cyan-900/50 rounded-full pl-10 pr-4 py-2.5 text-sm text-cyan-100 focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] outline-none transition-all placeholder:text-gray-600" 
-                value={searchTerm} 
-                onChange={(e) => setSearchTerm(e.target.value)} 
-             />
-             <Search className="absolute left-3 top-2.5 w-4 h-4 text-cyan-600" />
-          </div>
-          {/* ❌ ปุ่มรถเข็นถูกเอาออกแล้วตรงนี้ ❌ */}
+          {/* พื้นที่ด้านขวา (Search & Cart ถูกลบออกแล้ว) */}
+          <div className="flex items-center gap-5"></div>
         </div>
 
         {/* Mobile Menu Dropdown */}
@@ -132,14 +117,19 @@ export default function Home({ products }) {
                     className="lg:hidden bg-[#0a0a0a] border-b border-white/10 overflow-hidden shadow-2xl"
                 >
                     <div className="p-4 space-y-3">
-                        {/* ช่องค้นหาบนมือถือ */}
-                        <div className="relative">
-                            <input type="text" placeholder="ค้นหาสินค้า..." className="w-full bg-[#151515] border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:border-cyan-500 outline-none" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                            <Search className="absolute left-3 top-3.5 w-4 h-4 text-gray-500" />
-                        </div>
+                        {/* ลบช่องค้นหาในมือถือออกด้วย */}
+                        
                         <div className="grid grid-cols-2 gap-2 pt-2">
                             <Link href="/"><div className="p-3 rounded-xl bg-white/5 text-gray-200 font-bold flex items-center justify-center gap-2"><Zap size={16}/> หน้าแรก</div></Link>
                             <Link href="/topup"><div className="p-3 rounded-xl bg-green-500/10 text-green-400 font-bold flex items-center justify-center gap-2"><CreditCard size={16}/> เติมเกม</div></Link>
+                        </div>
+
+                        <div className="pt-2">
+                             <p className="text-xs text-gray-500 font-bold uppercase mb-2 ml-1">หมวดหมู่แนะนำ</p>
+                             <div className="flex flex-wrap gap-2">
+                                {gameIdCategories.slice(0,4).map(g => <Link key={g} href={`/category/${g}`}><span className="px-3 py-1 bg-cyan-900/30 border border-cyan-500/30 rounded-full text-xs text-cyan-300">{g}</span></Link>)}
+                                {appCategories.slice(0,4).map(a => <Link key={a} href={`/category/${a}`}><span className="px-3 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-xs text-purple-300">{a}</span></Link>)}
+                             </div>
                         </div>
                     </div>
                 </motion.div>
@@ -184,7 +174,6 @@ export default function Home({ products }) {
           </div>
           <div className="mb-4"><div className="inline-block bg-gradient-to-r from-red-600 to-pink-600 text-white px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-lg animate-bounce-slow transform -rotate-2 border border-white/10">⚡ DISCOUNT UP TO 70% TODAY</div></div>
           
-          {/* Typewriter */}
           <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-4 leading-tight drop-shadow-2xl">
             <span className="block text-white mb-2 text-shadow-sm">ยินดีต้อนรับสู่</span>
             <div className="min-h-[1.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
@@ -200,11 +189,10 @@ export default function Home({ products }) {
         <div className="flex items-end justify-between mb-12 border-b-2 border-cyan-500/20 pb-6">
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white flex items-center gap-4 uppercase tracking-wider">
             <span className="w-2 h-8 sm:w-3 sm:h-10 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-sm"></span> 
-            {searchTerm ? `ผลการค้นหา: "${searchTerm}"` : 'สินค้าแนะนำ'}
+            สินค้าแนะนำ
           </h2>
         </div>
 
-        {/* 👇 ใช้ filteredProducts แสดงผล 👇 */}
         <motion.div 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}
@@ -212,7 +200,7 @@ export default function Home({ products }) {
           {!products ? (
             [...Array(8)].map((_, i) => <SkeletonCard key={i} />)
           ) : (
-            filteredProducts.map((product) => (
+            safeProducts.map((product) => (
               <motion.div key={product.id} variants={itemVariants}>
                   <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
                       <div className="group h-full relative bg-[#080808] border border-cyan-900/30 rounded-2xl overflow-hidden hover:border-cyan-400/80 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]">
@@ -234,9 +222,7 @@ export default function Home({ products }) {
                               </div>
                             </div>
                             <Link href={`/product/${product.id}`}>
-                              <button className="relative overflow-hidden bg-white text-black px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg hover:bg-cyan-400 hover:text-black active:scale-95 flex items-center gap-1 group/btn">
-                                <span className="relative z-10 flex items-center gap-1">BUY NOW <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/></span>
-                              </button>
+                              <button className="relative overflow-hidden bg-white text-black px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg hover:bg-cyan-400 hover:text-black active:scale-95 flex items-center gap-1 group/btn"><span className="relative z-10 flex items-center gap-1">BUY NOW <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/></span></button>
                             </Link>
                           </div>
                         </div>
@@ -244,9 +230,6 @@ export default function Home({ products }) {
                   </Tilt>
               </motion.div>
             ))
-          )}
-          {filteredProducts.length === 0 && products && (
-            <div className="col-span-full text-center py-20 text-gray-500 bg-white/5 rounded-2xl"><p>ไม่พบสินค้าที่คุณค้นหา...</p></div>
           )}
         </motion.div>
       </main>
