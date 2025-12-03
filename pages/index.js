@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, Terminal, CheckCircle, Clock, Headphones, Menu, X } from 'lucide-react';
+import { Search, Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, Terminal, CheckCircle, Clock, Headphones, Menu, X } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -15,6 +15,7 @@ export default function Home({ products }) {
   const router = useRouter();
   
   // State
+  const [searchTerm, setSearchTerm] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [marqueeItems, setMarqueeItems] = useState([]);
 
@@ -22,7 +23,11 @@ export default function Home({ products }) {
   const appKeywords = ['Netflix', 'Youtube', 'Spotify', 'Viu', 'Disney', 'Prime', 'App', 'Canva', 'Office', 'Windows', 'Premium'];
   const safeProducts = products || [];
   
-  // ไม่มีการกรอง Search แล้ว ใช้ safeProducts ได้เลย
+  // 🔥 กรองสินค้าตามคำค้นหา (Real-time Search) 🔥
+  const filteredProducts = safeProducts.filter(p => 
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    p.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const topupCategories = [...new Set(safeProducts.filter(p => p.type === 'TOPUP').map(p => p.category))];
   const appCategories = [...new Set(safeProducts.filter(p => appKeywords.some(keyword => p.category.toLowerCase().includes(keyword.toLowerCase()))).map(p => p.category))];
@@ -105,8 +110,19 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* พื้นที่ด้านขวา (Search & Cart ถูกลบออกแล้ว) */}
-          <div className="flex items-center gap-5"></div>
+          {/* 🔥 ช่องค้นหา (กลับมาแล้ว!) และใช้งานได้จริง 🔥 */}
+          <div className="flex items-center gap-5">
+            <div className="hidden lg:flex relative group w-64">
+              <input 
+                type="text" 
+                placeholder="ค้นหาสินค้า..." 
+                className="w-full bg-[#0a0a0a]/80 border border-cyan-900/50 rounded-full pl-10 pr-4 py-2.5 text-sm text-cyan-100 focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] outline-none transition-all placeholder:text-gray-600" 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-cyan-600" />
+            </div>
+          </div>
         </div>
 
         {/* Mobile Menu Dropdown */}
@@ -117,7 +133,11 @@ export default function Home({ products }) {
                     className="lg:hidden bg-[#0a0a0a] border-b border-white/10 overflow-hidden shadow-2xl"
                 >
                     <div className="p-4 space-y-3">
-                        {/* ลบช่องค้นหาในมือถือออกด้วย */}
+                        {/* ช่องค้นหาบนมือถือ (กลับมาแล้ว!) */}
+                        <div className="relative">
+                            <input type="text" placeholder="ค้นหาสินค้า..." className="w-full bg-[#151515] border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:border-cyan-500 outline-none" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                            <Search className="absolute left-3 top-3.5 w-4 h-4 text-gray-500" />
+                        </div>
                         
                         <div className="grid grid-cols-2 gap-2 pt-2">
                             <Link href="/"><div className="p-3 rounded-xl bg-white/5 text-gray-200 font-bold flex items-center justify-center gap-2"><Zap size={16}/> หน้าแรก</div></Link>
@@ -161,6 +181,7 @@ export default function Home({ products }) {
 
       {/* HERO SECTION */}
       <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
+        {/* ... (Background Effects เดิม) ... */}
         <div className="absolute inset-0 -z-20 transform-style-3d overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
           <div className="cyber-grid animate-gridMove opacity-30"></div>
@@ -169,6 +190,7 @@ export default function Home({ products }) {
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto">
+          {/* ... (Badges เดิม) ... */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.2)]">
             <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
           </div>
@@ -189,10 +211,11 @@ export default function Home({ products }) {
         <div className="flex items-end justify-between mb-12 border-b-2 border-cyan-500/20 pb-6">
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white flex items-center gap-4 uppercase tracking-wider">
             <span className="w-2 h-8 sm:w-3 sm:h-10 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-sm"></span> 
-            สินค้าแนะนำ
+            {searchTerm ? `ผลการค้นหา: "${searchTerm}"` : 'สินค้าแนะนำ'}
           </h2>
         </div>
 
+        {/* 👇 ใช้ filteredProducts แสดงผล (เพื่อให้ค้นหาได้) 👇 */}
         <motion.div 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}
@@ -200,7 +223,7 @@ export default function Home({ products }) {
           {!products ? (
             [...Array(8)].map((_, i) => <SkeletonCard key={i} />)
           ) : (
-            safeProducts.map((product) => (
+            filteredProducts.map((product) => (
               <motion.div key={product.id} variants={itemVariants}>
                   <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
                       <div className="group h-full relative bg-[#080808] border border-cyan-900/30 rounded-2xl overflow-hidden hover:border-cyan-400/80 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]">
@@ -230,6 +253,9 @@ export default function Home({ products }) {
                   </Tilt>
               </motion.div>
             ))
+          )}
+          {filteredProducts.length === 0 && products && (
+            <div className="col-span-full text-center py-20 text-gray-500 bg-white/5 rounded-2xl"><p>ไม่พบสินค้าที่คุณค้นหา...</p></div>
           )}
         </motion.div>
       </main>
