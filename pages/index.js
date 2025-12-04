@@ -57,7 +57,7 @@ export default function Home({ products, categories }) {
   const itemVariants = { hidden: { y: 30, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } } };
 
   return (
-    <div className="min-h-screen bg-[#030305] text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
+    <div className="min-h-screen  text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
       <Head><title>NEON STORE | The Future of Gaming</title></Head>
 
       {/* 🔥🔥🔥 GAMING BACKGROUND SYSTEM (ปรับปรุงใหม่) 🔥🔥🔥 */}
