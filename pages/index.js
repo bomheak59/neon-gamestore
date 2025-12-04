@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ChevronRight, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Trophy, Users, Activity } from 'lucide-react';
+import { Zap, Gamepad2, ShieldCheck, ChevronRight, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -49,36 +49,32 @@ export default function Home({ products }) {
   const itemVariants = { hidden: { y: 30, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } } };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
+    <div className="min-h-screen bg-[#030305] text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
       <Head><title>NEON STORE | The Future of Gaming</title></Head>
 
-      {/* 🔥 GAMING BACKGROUND (Moving Grid) 🔥 */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[#020204]"></div>
-        {/* Grid Animation */}
-        <div className="cyber-grid opacity-20"></div>
-        
-        {/* Floating Glows */}
-        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-[-20%] left-[20%] w-[800px] h-[800px] bg-cyan-600/20 rounded-full blur-[150px]" />
-        <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute top-[-10%] right-[10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[150px]" />
+      {/* Background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#050505] to-[#020202]">
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-[-20%] left-[20%] w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[150px]" />
+        <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute top-[-10%] right-[10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px]" />
       </div>
 
       {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 border-b border-white/5 bg-[#050505]/80 backdrop-blur-xl transition-all duration-300">
+      <nav className="sticky top-0 z-50 border-b border-cyan-500/10 bg-[#050505]/90 backdrop-blur-2xl transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
           
           {/* Logo & Mobile Menu Button */}
           <div className="flex items-center gap-4">
+             {/* ปุ่มเมนูมือถือ */}
              <button className="lg:hidden text-gray-300 hover:text-white p-1" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
              </button>
 
              <Link href="/">
                 <div className="flex items-center gap-2 group cursor-pointer">
-                  <div className="relative w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-500/60 transition-all">
-                      <Zap className="text-white w-6 h-6 fill-current relative z-10" />
+                  <div className="relative w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                      <Zap className="text-white w-5 h-5 lg:w-6 lg:h-6 fill-current relative z-10" />
                   </div>
-                  <span className="font-black text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">
+                  <span className="font-extrabold text-xl lg:text-3xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-gray-400">
                       NEON<span className="text-cyan-400">STORE</span>
                   </span>
                 </div>
@@ -87,7 +83,7 @@ export default function Home({ products }) {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-1 text-sm font-bold uppercase tracking-wider text-gray-400">
-            <Link href="/"><button className="px-4 py-2 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">หน้าแรก</button></Link>
+            <Link href="/"><button className="px-3 py-2 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">หน้าแรก</button></Link>
             
             <div className="relative group px-1">
               <button className="flex items-center gap-2 px-3 py-2 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all"><Gamepad2 size={16}/> ซื้อรหัสเกม</button>
@@ -107,10 +103,10 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* Buttons ขวา (แทนที่ Search/Cart) */}
-          <div className="hidden lg:flex items-center gap-3">
-             <button className="px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg text-xs font-bold transition-all">LOGIN</button>
-             <button className="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-black rounded-lg text-xs font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all">REGISTER</button>
+          {/* Buttons ขวา (Login/Register) */}
+          <div className="flex items-center gap-3">
+             <button className="hidden sm:block px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-lg text-xs font-bold transition-all border border-white/10">เข้าสู่ระบบ</button>
+             <button className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all">สมัครสมาชิก</button>
           </div>
         </div>
 
@@ -140,19 +136,19 @@ export default function Home({ products }) {
       </nav>
 
       {/* MARQUEE */}
-      <div className="relative z-40 bg-black/60 border-y border-white/5 backdrop-blur-md h-10 flex items-center overflow-hidden">
-        <div className="bg-cyan-600 text-black text-xs font-black px-4 h-full flex items-center z-10 absolute left-0 shadow-[0_0_20px_rgba(6,182,212,0.5)] clip-path-slant">
-           <Bell size={14} className="mr-2"/> NEWS
+      <div className="relative z-40 bg-black/40 border-y border-cyan-500/30 backdrop-blur-md h-12 flex items-center overflow-hidden">
+        <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm font-extrabold px-6 h-full flex items-center z-10 absolute left-0 shadow-[0_0_25px_rgba(6,182,212,0.6)] clip-path-slant">
+           <Bell size={16} className="mr-2 animate-swing"/> ประกาศ
         </div>
         <div className="w-full h-full overflow-hidden">
-            <Marquee gradient={false} speed={40} className="text-xs font-bold h-full overflow-hidden" style={{ overflowY: "hidden" }}>
-                <div className="flex items-center pl-32">
+            <Marquee gradient={false} speed={50} className="text-sm font-bold h-full overflow-hidden py-2" style={{ overflowY: "hidden" }} onCycleComplete={() => setMarqueeItems(generateMarqueeData())}>
+                <div className="flex items-center pl-40">
                     {marqueeItems.map((msg) => (
-                        <div key={msg.id} className="flex items-center mx-8"> 
+                        <div key={msg.id} className="flex items-center mx-12"> 
                             {msg.type === 'sale' ? (
-                            <span className="flex items-center gap-2 text-gray-300"><Cpu size={12} className="text-cyan-400"/> <b className="text-cyan-400">{msg.user}</b> ซื้อ <span className="text-white">{msg.product}</span><span className="text-[10px] text-gray-500 opacity-70">({msg.time})</span></span>
+                            <span className="flex items-center gap-2 text-cyan-200 whitespace-nowrap bg-cyan-950/30 border border-cyan-500/20 px-4 py-1.5 rounded-full"><Cpu size={14} className="text-cyan-400"/> <b className="text-cyan-400">{msg.user}</b> <span className="text-gray-400">ซื้อ</span> <span className="text-white">{msg.product}</span><span className="text-xs text-gray-500 ml-1">({msg.time})</span></span>
                             ) : (
-                            <span className="flex items-center gap-2 text-yellow-400"><span className="text-lg">🔥</span>{msg.text}</span>
+                            <span className="flex items-center gap-2 text-yellow-100 whitespace-nowrap px-4 py-1.5 rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30">{msg.icon === 'fire' && <span className="text-orange-400 text-lg">🔥</span>}{msg.text}</span>
                             )}
                         </div>
                     ))}
@@ -162,46 +158,54 @@ export default function Home({ products }) {
       </div>
 
       {/* HERO SECTION */}
-      <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden">
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-300 text-[10px] sm:text-xs font-bold mb-8 backdrop-blur-md">
-            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> 
-            GAME SHOP NO.1 IN THAILAND
+      <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
           </div>
           
-          <h1 className="text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter mb-6 leading-none drop-shadow-2xl text-white">
-            THE FUTURE OF <br/>
-            <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-pulse-slow">
-                <Typewriter options={{ strings: ['GAMING TOPUP', 'GAME ID SHOP', 'PREMIUM APPS'], autoStart: true, loop: true, delay: 50, deleteSpeed: 30 }} />
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-4 leading-tight drop-shadow-2xl">
+            <span className="block text-white mb-2 text-shadow-sm">ยินดีต้อนรับสู่</span>
+            <div className="min-h-[1.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                <Typewriter options={{ strings: ['NEONSTORE', 'GAME ID SHOP', 'TOPUP SERVICE'], autoStart: true, loop: true, delay: 75, deleteSpeed: 50 }} />
             </div>
           </h1>
           
-          <p className="mt-6 text-sm sm:text-lg text-gray-400 mb-10 leading-relaxed font-medium px-4 max-w-2xl mx-auto">
-             สัมผัสประสบการณ์การเติมเกมและซื้อไอดีที่รวดเร็วที่สุด ด้วยระบบอัตโนมัติ AI <br className="hidden sm:block"/>
-             ปลอดภัย 100% พร้อมทีมงานดูแลตลอด 24 ชั่วโมง
+          <p className="mt-4 text-sm sm:text-lg text-gray-400 mb-8 leading-relaxed font-medium px-4">
+             ศูนย์รวมไอดีเกมและบริการเติมเกมที่ครบวงจรที่สุด <br className="hidden sm:block"/>
+             <span className="text-cyan-400">ปลอดภัย 100%</span> • <span className="text-purple-400">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400">ดูแลตลอด 24 ชม.</span>
           </p>
           
-          {/* 🔥 Stats Bar (สถิติความน่าเชื่อถือ) 🔥 */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 border-t border-white/10 pt-8">
-             <StatBox icon={Users} label="Active Users" value="50K+" color="cyan" />
-             <StatBox icon={CheckCircle} label="Safe & Secure" value="100%" color="green" />
-             <StatBox icon={Trophy} label="Best Seller" value="No. 1" color="yellow" />
-             <StatBox icon={Activity} label="Server Status" value="Online" color="purple" />
+          {/* 🔥 Trust Stats (เพิ่มความน่าเชื่อถือสูงสุด) 🔥 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
+             <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
+             <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
+             <StatBox icon={Trophy} label="อันดับยอดขาย" value="No. 1" color="yellow" />
+             <StatBox icon={Activity} label="สถานะเซิร์ฟเวอร์" value="Online" color="purple" />
           </div>
         </div>
       </div>
 
+      {/* 🔥 WHY CHOOSE US (เพิ่มโซนจุดเด่น) 🔥 */}
+      <div className="max-w-7xl mx-auto px-6 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FeatureCard icon={Clock} title="จัดส่งอัตโนมัติ" desc="ได้รับสินค้าทันทีภายใน 1 นาที ด้วยระบบ AI อัจฉริยะ ตลอด 24 ชม." color="yellow" />
+              <FeatureCard icon={ShieldCheck} title="รับประกันสินค้า" desc="สินค้าทุกชิ้นผ่านการตรวจสอบ มั่นใจได้ 100% มีปัญหาเคลมฟรี" color="green" />
+              <FeatureCard icon={Headphones} title="ซัพพอร์ตมืออาชีพ" desc="ทีมงานพร้อมดูแลและแก้ปัญหาให้คุณตลอดเวลา ไม่ทิ้งลูกค้า" color="cyan" />
+          </div>
+      </div>
+
       {/* PRODUCT GRID */}
-      <main className="max-w-8xl mx-auto px-6 pb-32 relative z-10">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-black text-white flex items-center gap-3 uppercase tracking-wider">
-            <span className="w-1 h-8 bg-cyan-500 rounded-full shadow-[0_0_15px_cyan]"></span> 
-            Recommended
+      <main id="shop-section" className="max-w-8xl mx-auto px-6 pb-32 relative z-10">
+        <div className="flex items-end justify-between mb-12 border-b-2 border-cyan-500/20 pb-6">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white flex items-center gap-4 uppercase tracking-wider">
+            <span className="w-2 h-8 sm:w-3 sm:h-10 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-sm"></span> 
+            สินค้าแนะนำ
           </h2>
         </div>
 
         <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}
         >
           {!products ? (
@@ -210,43 +214,26 @@ export default function Home({ products }) {
             safeProducts.map((product) => (
               <motion.div key={product.id} variants={itemVariants}>
                   <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
-                      <div className="group h-full relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-2xl hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]">
-                        
-                        {/* Image Area */}
-                        <div className="h-60 overflow-hidden relative">
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 opacity-90"></div>
+                      <div className="group h-full relative bg-[#080808] border border-cyan-900/30 rounded-2xl overflow-hidden hover:border-cyan-400/80 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]">
+                        <div className="h-52 overflow-hidden relative">
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent z-10 opacity-80"></div>
                           <img src={product.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                          
-                          {product.discount > 0 && (
-                            <div className="absolute top-3 right-3 z-30">
-                                <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">-{product.discount}%</span>
-                            </div>
-                          )}
-
-                          <div className="absolute top-3 left-3 z-20">
-                             <span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded backdrop-blur-md border ${product.type === 'TOPUP' ? 'bg-green-500/10 border-green-500/50 text-green-400' : 'bg-purple-500/10 border-purple-500/50 text-purple-300'}`}>
-                               <Cpu size={10}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}
-                             </span>
-                          </div>
+                          {product.discount > 0 && (<div className="absolute top-2 right-2 z-30"><span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow-lg animate-pulse">-{product.discount}%</span></div>)}
+                          <div className="absolute top-2 left-2 z-20"><span className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded-md backdrop-blur-md border shadow-lg ${product.type === 'TOPUP' ? 'bg-green-950/60 border-green-500/50 text-green-400' : 'bg-purple-950/60 border-purple-500/50 text-purple-300'}`}><Cpu size={12}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}</span></div>
                         </div>
-
-                        {/* Content Area */}
-                        <div className="p-6 relative z-20 flex flex-col h-auto">
-                          <h3 className="text-xl font-bold text-white mb-2 truncate group-hover:text-cyan-400 transition-colors">{product.name}</h3>
-                          <p className="text-gray-500 text-xs mb-6 line-clamp-2 font-medium">{product.description}</p>
-                          
-                          <div className="mt-auto flex justify-between items-end border-t border-dashed border-white/10 pt-4">
+                        <div className="p-5 relative z-20 flex flex-col h-auto">
+                          <h3 className="text-lg font-bold text-white mb-2 truncate group-hover:text-cyan-300 transition-colors uppercase tracking-wide">{product.name}</h3>
+                          <p className="text-gray-400 text-xs mb-4 line-clamp-2 h-8 leading-relaxed font-medium">{product.description}</p>
+                          <div className="mt-auto flex justify-between items-end pt-4 border-t border-dashed border-cyan-900/50 relative">
                             <div className="flex flex-col">
-                              <span className="text-[10px] text-gray-500 font-bold mb-1 uppercase tracking-wider">Starting at</span>
+                              <span className="text-[10px] text-cyan-500 font-bold mb-0.5 uppercase tracking-wider flex items-center gap-1"><Sparkles size={10}/> PRICE</span>
                               <div className="flex items-center gap-2">
-                                <span className="text-3xl font-black text-white">฿{product.price}</span>
+                                <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">฿{product.price}</span>
                                 {product.discount > 0 && (<span className="text-xs text-gray-600 line-through">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
                               </div>
                             </div>
                             <Link href={`/product/${product.id}`}>
-                              <button className="bg-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1 group/btn shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                                BUY <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/>
-                              </button>
+                              <button className="relative overflow-hidden bg-white text-black px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg hover:bg-cyan-400 hover:text-black active:scale-95 flex items-center gap-1 group/btn"><span className="relative z-10 flex items-center gap-1">BUY NOW <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/></span></button>
                             </Link>
                           </div>
                         </div>
@@ -258,35 +245,44 @@ export default function Home({ products }) {
         </motion.div>
       </main>
 
-      <footer className="border-t border-white/5 bg-[#020202] py-20 text-center">
-        <h2 className="text-3xl font-black text-white mb-4 tracking-tighter">NEON<span className="text-cyan-500">STORE</span></h2>
-        <p className="text-gray-600 text-sm">© 2025 Neon Store System. All rights reserved.</p>
-      </footer>
-
-      {/* CSS Grid Animation */}
+      <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">© 2025 All rights reserved.</p></footer>
+      
+      {/* Styles & Keyframes */}
       <style jsx>{`
         .perspective-container { perspective: 1000px; }
-        .cyber-grid {
-            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px; transform: rotateX(60deg);
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 60%);
-            animation: gridMove 20s linear infinite;
-        }
-        @keyframes gridMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .animate-gridMove { animation: gridMove 1s linear infinite; }
+        @keyframes gridMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(40px); } }
       `}</style>
     </div>
   );
 }
 
-// Components
+// Components ย่อยสำหรับความสวยงาม
 function StatBox({ icon: Icon, label, value, color }) {
     const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
     return (
-        <div className="bg-white/5 border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center hover:bg-white/10 transition-all hover:-translate-y-1 duration-300">
-            <Icon size={28} className={`${colors[color]} mb-2`} />
+        <div className="bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md flex flex-col items-center justify-center hover:bg-white/10 transition-all">
+            <Icon size={24} className={`${colors[color]} mb-2`} />
             <div className="text-2xl font-black text-white">{value}</div>
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">{label}</div>
+            <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
+        </div>
+    );
+}
+
+function FeatureCard({ icon: Icon, title, desc, color }) {
+    const colors = { 
+        cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30', 
+        green: 'bg-green-500/10 text-green-400 border-green-500/30', 
+        yellow: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' 
+    };
+    return (
+        <div className={`p-6 rounded-2xl border ${colors[color].split(' ')[2]} bg-[#0a0a0a] hover:-translate-y-1 transition-transform duration-300`}>
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}>
+                <Icon size={24} />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+            <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
         </div>
     );
 }
