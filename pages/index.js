@@ -180,7 +180,7 @@ export default function Home({ products }) {
           {/* 🔥 Trust Stats (เพิ่มความน่าเชื่อถือ) 🔥 */}
           <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-8 border-t border-white/10 pt-8">
              <div className="text-center">
-                <div className="text-2xl font-black text-white flex justify-center items-center gap-1"><Users size={20} className="text-cyan-400"/> 50K+</div>
+                <div className="text-2xl font-black text-white flex justify-center items-center gap-1"><Users size={20} className="text-cyan-400"/> 10K+</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wider">ผู้ใช้งาน</div>
              </div>
              <div className="text-center border-l border-white/10">
