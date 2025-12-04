@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ShieldCheck, ChevronRight, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity } from 'lucide-react';
+import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -103,10 +103,8 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* พื้นที่ด้านขวา (ไม่มีปุ่ม Login แล้ว) */}
-          <div className="hidden lg:flex items-center gap-3">
-             {/* ว่างไว้ */}
-          </div>
+          {/* พื้นที่ด้านขวา (ว่างไว้) */}
+          <div className="hidden lg:flex items-center gap-3"></div>
         </div>
 
         {/* Mobile Menu Dropdown */}
@@ -137,7 +135,7 @@ export default function Home({ products }) {
       </nav>
 
       {/* MARQUEE */}
-      <div className="relative z-40 bg-black/40 border-y border-cyan-500/30 backdrop-blur-md h-12 flex items-center overflow-hidden">
+      <div className="relative z-40 bg-black/60 border-y border-cyan-500/30 backdrop-blur-md h-12 flex items-center overflow-hidden">
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm font-extrabold px-6 h-full flex items-center z-10 absolute left-0 shadow-[0_0_25px_rgba(6,182,212,0.6)] clip-path-slant">
            <Bell size={16} className="mr-2 animate-swing"/> ประกาศ
         </div>
@@ -184,7 +182,7 @@ export default function Home({ products }) {
              <span className="text-cyan-400">ปลอดภัย 100%</span> • <span className="text-purple-400">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400">ดูแลตลอด 24 ชม.</span>
           </p>
           
-          {/* 🔥 Trust Stats (เพิ่มความน่าเชื่อถือสูงสุด) 🔥 */}
+          {/* 🔥 Trust Stats 🔥 */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
              <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
              <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
@@ -194,7 +192,7 @@ export default function Home({ products }) {
         </div>
       </div>
 
-      {/* 🔥 WHY CHOOSE US (เพิ่มโซนจุดเด่น) 🔥 */}
+      {/* 🔥 WHY CHOOSE US 🔥 */}
       <div className="max-w-7xl mx-auto px-6 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FeatureCard icon={Clock} title="จัดส่งอัตโนมัติ" desc="ได้รับสินค้าทันทีภายใน 1 นาที ด้วยระบบ AI อัจฉริยะ ตลอด 24 ชม." color="yellow" />
@@ -205,43 +203,62 @@ export default function Home({ products }) {
 
       {/* PRODUCT GRID */}
       <main id="shop-section" className="max-w-8xl mx-auto px-6 pb-32 relative z-10">
-        <div className="flex items-end justify-between mb-12 border-b-2 border-cyan-500/20 pb-6">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white flex items-center gap-4 uppercase tracking-wider">
-            <span className="w-2 h-8 sm:w-3 sm:h-10 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-sm"></span> 
+        <div className="flex items-center justify-between mb-12">
+          <h2 className="text-3xl font-black text-white flex items-center gap-3 uppercase tracking-wider">
+            <span className="w-1 h-8 bg-cyan-500 rounded-full shadow-[0_0_15px_cyan]"></span> 
             สินค้าแนะนำ
           </h2>
         </div>
 
         <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}
         >
-          {!products ? (
-            [...Array(8)].map((_, i) => <SkeletonCard key={i} />)
+          {/* 🔥 แสดงเฉพาะสินค้าแนะนำ (safeProducts ที่กรองมาแล้ว) 🔥 */}
+          {safeProducts.length === 0 ? (
+            <div className="col-span-full text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-white/10">
+               <p className="text-lg font-bold mb-2">ยังไม่มีสินค้าแนะนำ</p>
+               <p className="text-sm">โปรดรอติดตามสินค้าใหม่เร็วๆ นี้</p>
+            </div>
           ) : (
             safeProducts.map((product) => (
               <motion.div key={product.id} variants={itemVariants}>
                   <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
-                      <div className="group h-full relative bg-[#080808] border border-cyan-900/30 rounded-2xl overflow-hidden hover:border-cyan-400/80 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]">
-                        <div className="h-52 overflow-hidden relative">
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent z-10 opacity-80"></div>
+                      <div className="group h-full relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-2xl hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]">
+                        
+                        <div className="h-60 overflow-hidden relative">
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 opacity-90"></div>
                           <img src={product.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                          {product.discount > 0 && (<div className="absolute top-2 right-2 z-30"><span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow-lg animate-pulse">-{product.discount}%</span></div>)}
-                          <div className="absolute top-2 left-2 z-20"><span className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded-md backdrop-blur-md border shadow-lg ${product.type === 'TOPUP' ? 'bg-green-950/60 border-green-500/50 text-green-400' : 'bg-purple-950/60 border-purple-500/50 text-purple-300'}`}><Cpu size={12}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}</span></div>
+                          
+                          {product.discount > 0 && (
+                            <div className="absolute top-3 right-3 z-30">
+                                <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">-{product.discount}%</span>
+                            </div>
+                          )}
+
+                          <div className="absolute top-3 left-3 z-20">
+                             <span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded backdrop-blur-md border ${product.type === 'TOPUP' ? 'bg-green-500/10 border-green-500/50 text-green-400' : 'bg-purple-500/10 border-purple-500/50 text-purple-300'}`}>
+                               <Cpu size={10}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}
+                             </span>
+                          </div>
                         </div>
-                        <div className="p-5 relative z-20 flex flex-col h-auto">
-                          <h3 className="text-lg font-bold text-white mb-2 truncate group-hover:text-cyan-300 transition-colors uppercase tracking-wide">{product.name}</h3>
-                          <p className="text-gray-400 text-xs mb-4 line-clamp-2 h-8 leading-relaxed font-medium">{product.description}</p>
-                          <div className="mt-auto flex justify-between items-end pt-4 border-t border-dashed border-cyan-900/50 relative">
+
+                        <div className="p-6 relative z-20 flex flex-col h-auto">
+                          <h3 className="text-xl font-bold text-white mb-2 truncate group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                          <p className="text-gray-500 text-xs mb-6 line-clamp-2 font-medium">{product.description}</p>
+                          
+                          <div className="mt-auto flex justify-between items-end border-t border-dashed border-white/10 pt-4">
                             <div className="flex flex-col">
-                              <span className="text-[10px] text-cyan-500 font-bold mb-0.5 uppercase tracking-wider flex items-center gap-1"><Sparkles size={10}/> PRICE</span>
+                              <span className="text-[10px] text-gray-500 font-bold mb-1 uppercase tracking-wider">Starting at</span>
                               <div className="flex items-center gap-2">
-                                <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">฿{product.price}</span>
+                                <span className="text-3xl font-black text-white">฿{product.price}</span>
                                 {product.discount > 0 && (<span className="text-xs text-gray-600 line-through">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
                               </div>
                             </div>
                             <Link href={`/product/${product.id}`}>
-                              <button className="relative overflow-hidden bg-white text-black px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg hover:bg-cyan-400 hover:text-black active:scale-95 flex items-center gap-1 group/btn"><span className="relative z-10 flex items-center gap-1">BUY NOW <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/></span></button>
+                              <button className="bg-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1 group/btn shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                                BUY <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/>
+                              </button>
                             </Link>
                           </div>
                         </div>
@@ -255,7 +272,6 @@ export default function Home({ products }) {
 
       <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">© 2025 All rights reserved.</p></footer>
       
-      {/* Styles & Keyframes */}
       <style jsx>{`
         .perspective-container { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
@@ -266,14 +282,14 @@ export default function Home({ products }) {
   );
 }
 
-// Components ย่อยสำหรับความสวยงาม
+// Components
 function StatBox({ icon: Icon, label, value, color }) {
     const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
     return (
-        <div className="bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md flex flex-col items-center justify-center hover:bg-white/10 transition-all">
-            <Icon size={24} className={`${colors[color]} mb-2`} />
+        <div className="bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md flex flex-col items-center justify-center hover:bg-white/10 transition-all hover:-translate-y-1 duration-300">
+            <Icon size={28} className={`${colors[color]} mb-2`} />
             <div className="text-2xl font-black text-white">{value}</div>
-            <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">{label}</div>
         </div>
     );
 }
