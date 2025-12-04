@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ShieldCheck, ChevronRight, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity, LayoutGrid, Flame, Crown, Sword, Shield } from 'lucide-react';
+import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity, LayoutGrid, Flame } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -20,6 +20,7 @@ export default function Home({ products, categories }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   // Logic
+  const appKeywords = ['Netflix', 'Youtube', 'Spotify', 'Viu', 'Disney', 'Prime', 'App', 'Canva', 'Office', 'Windows', 'Premium'];
   const safeProducts = products || [];
   
   const displayedProducts = selectedCategory === 'All' 
@@ -27,16 +28,8 @@ export default function Home({ products, categories }) {
     : safeProducts.filter(p => p.category === selectedCategory);
 
   const topupCategories = [...new Set(safeProducts.filter(p => p.type === 'TOPUP').map(p => p.category))];
-  const appCategories = [...new Set(safeProducts.filter(p => p.type !== 'TOPUP' && p.type !== 'ID_ACCOUNT').map(p => p.category))];
-  const gameIdCategories = [...new Set(safeProducts.filter(p => p.type === 'ID_ACCOUNT').map(p => p.category))];
-
-  // ข้อมูลทีมงาน (Mock Data)
-  const teamMembers = [
-    { name: "Admin Zero", role: "Owner", status: "Online", level: 99, icon: Crown, color: "text-yellow-400" },
-    { name: "Support A", role: "Game Master", status: "Online", level: 85, icon: Sword, color: "text-red-400" },
-    { name: "Support B", role: "Moderator", status: "Busy", level: 70, icon: Shield, color: "text-blue-400" },
-    { name: "Tester X", role: "Tester", status: "Offline", level: 60, icon: Gamepad2, color: "text-green-400" },
-  ];
+  const appCategories = [...new Set(safeProducts.filter(p => appKeywords.some(keyword => p.category.toLowerCase().includes(keyword.toLowerCase()))).map(p => p.category))];
+  const gameIdCategories = [...new Set(safeProducts.filter(p => p.type === 'ID_ACCOUNT' && !appKeywords.some(keyword => p.category.toLowerCase().includes(keyword.toLowerCase()))).map(p => p.category))];
 
   useEffect(() => {
     const users = ['Kittisak', 'User99x', 'GamerPro', 'Somchai', 'Alice', 'BobGamer', 'NongMay', 'ProPlayer', 'DevMan', 'lnwZa'];
@@ -55,7 +48,6 @@ export default function Home({ products, categories }) {
     setMarqueeItems(data);
   }, []);
 
-  // Animation Variants
   const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
   const itemVariants = { hidden: { y: 50, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 120 } } };
 
@@ -65,15 +57,22 @@ export default function Home({ products, categories }) {
 
       {/* 🔥 ULTIMATE BACKGROUND SYSTEM 🔥 */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        {/* พื้นหลังดำลึก */}
         <div className="absolute inset-0 bg-[#050505]"></div>
+        
+        {/* Grid พื้นหลังเคลื่อนไหว */}
         <div className="cyber-grid opacity-20"></div>
+        
+        {/* แสง Aurora วิ่งไปมา */}
         <motion.div animate={{ x: [-100, 100, -100], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 20, repeat: Infinity }} className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[180px]" />
         <motion.div animate={{ x: [100, -100, 100], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 25, repeat: Infinity }} className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[180px]" />
+
+        {/* Scanline Overlay (ลายเส้นทีวี) */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]"></div>
         <div className="scanlines opacity-5"></div>
       </div>
 
-      {/* NAVBAR */}
+      {/* NAVBAR (Glassmorphism) */}
       <nav className="sticky top-0 z-50 border-b border-white/5 bg-[#050505]/70 backdrop-blur-xl transition-all duration-300 shadow-lg shadow-cyan-900/10">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -104,6 +103,7 @@ export default function Home({ products, categories }) {
           </div>
         </div>
 
+        {/* Mobile Menu */}
         <AnimatePresence>
             {isMobileMenuOpen && (
                 <motion.div 
@@ -132,7 +132,7 @@ export default function Home({ products, categories }) {
                     {marqueeItems.map((msg) => (
                         <div key={msg.id} className="flex items-center mx-8"> 
                             {msg.type === 'sale' ? (
-                            <span className="flex items-center gap-2 text-gray-400 font-mono"><Cpu size={12} className="text-cyan-400"/> <b className="text-cyan-300">{msg.user}</b> purchased <span className="text-white border-b border-cyan-500/50">{msg.product}</span><span className="text-[10px] text-gray-600">({msg.time})</span></span>
+                            <span className="flex items-center gap-2 text-gray-400 font-mono"><Cpu size={14} className="text-cyan-400"/> <b className="text-cyan-300">{msg.user}</b> purchased <span className="text-white border-b border-cyan-500/50">{msg.product}</span><span className="text-[10px] text-gray-600">({msg.time})</span></span>
                             ) : (
                             <span className="flex items-center gap-2 text-yellow-400 font-black tracking-wide"><Flame size={14} className="fill-current"/> {msg.text}</span>
                             )}
@@ -144,7 +144,7 @@ export default function Home({ products, categories }) {
       </div>
 
       {/* HERO SECTION */}
-      <div className="relative pt-32 pb-20 text-center px-4 z-10 overflow-hidden perspective-container">
+      <div className="relative pt-32 pb-40 text-center px-4 z-10 overflow-hidden perspective-container">
         <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-950/30 text-cyan-300 text-xs font-bold mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] transition-shadow cursor-default">
@@ -164,70 +164,13 @@ export default function Home({ products, categories }) {
             </div>
           </motion.div>
           
-          {/* Stats Bar */}
+          {/* Stats Bar (Glass Card) */}
           <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3, duration: 0.8 }} className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-16 p-4 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md shadow-2xl">
              <StatBox icon={Users} label="USERS" value="50K+" color="cyan" />
              <StatBox icon={CheckCircle} label="SECURE" value="100%" color="green" />
              <StatBox icon={Trophy} label="RANK" value="#1" color="yellow" />
              <StatBox icon={Activity} label="SERVER" value="ONLINE" color="purple" />
           </motion.div>
-        </div>
-      </div>
-
-      {/* 🔥 TEAM TABLE SECTION (เพิ่มใหม่) 🔥 */}
-      <div className="max-w-5xl mx-auto px-6 mb-24 relative z-10">
-        <div className="flex items-center gap-4 mb-8 justify-center">
-            <div className="h-[2px] w-16 bg-gradient-to-r from-transparent to-purple-500"></div>
-            <h2 className="text-3xl font-black text-white tracking-tight uppercase">Our <span className="text-purple-500">Squad</span></h2>
-            <div className="h-[2px] w-16 bg-gradient-to-l from-transparent to-purple-500"></div>
-        </div>
-
-        <div className="bg-[#0a0a0a]/80 border border-white/10 rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(147,51,234,0.1)] backdrop-blur-md">
-            <table className="w-full text-left">
-                <thead>
-                    <tr className="border-b border-white/10 bg-white/5">
-                        <th className="p-5 text-xs font-black text-gray-400 uppercase tracking-widest">Role / Class</th>
-                        <th className="p-5 text-xs font-black text-gray-400 uppercase tracking-widest">Name</th>
-                        <th className="p-5 text-xs font-black text-gray-400 uppercase tracking-widest text-center">Level</th>
-                        <th className="p-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">Status</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                    {teamMembers.map((member, index) => (
-                        <tr key={index} className="group hover:bg-white/5 transition-colors">
-                            <td className="p-5">
-                                <div className="flex items-center gap-3">
-                                    <div className={`p-2 rounded-lg bg-white/5 ${member.color} group-hover:scale-110 transition-transform`}>
-                                        <member.icon size={20} />
-                                    </div>
-                                    <span className={`font-bold ${member.color}`}>{member.role}</span>
-                                </div>
-                            </td>
-                            <td className="p-5">
-                                <span className="font-bold text-white text-lg">{member.name}</span>
-                            </td>
-                            <td className="p-5 text-center">
-                                <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-cyan-400">
-                                    LV. {member.level}
-                                </span>
-                            </td>
-                            <td className="p-5 text-right">
-                                <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase ${
-                                    member.status === 'Online' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 
-                                    member.status === 'Busy' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' : 
-                                    'bg-gray-500/10 text-gray-400 border border-gray-500/20'
-                                }`}>
-                                    <div className={`w-2 h-2 rounded-full ${
-                                        member.status === 'Online' ? 'bg-green-400 animate-pulse' : 
-                                        member.status === 'Busy' ? 'bg-yellow-400' : 'bg-gray-400'
-                                    }`}></div>
-                                    {member.status}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
         </div>
       </div>
 
@@ -351,7 +294,7 @@ export async function getServerSideProps() {
   try {
     const prisma = (await import('@/lib/prisma')).default;
     const products = await prisma.product.findMany({ 
-        where: { isRecommended: true }, 
+        where: { isRecommended: true }, // โชว์เฉพาะแนะนำ
         orderBy: { createdAt: 'desc' } 
     });
     const categories = await prisma.category.findMany({ orderBy: { createdAt: 'desc' } });
