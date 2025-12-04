@@ -298,7 +298,25 @@ function FeatureCard({ icon: Icon, title, desc, color }) {
 export async function getServerSideProps() {
   try {
     const prisma = (await import('@/lib/prisma')).default;
-    const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } });
-    return { props: { products: JSON.parse(JSON.stringify(products)) } };
-  } catch (e) { return { props: { products: [] } }; }
+    
+    // ดึงข้อมูลสินค้า
+    const products = await prisma.product.findMany({ 
+        orderBy: [
+            { isRecommended: 'desc' }, // 🌟 เรียงให้สินค้าแนะนำ (True) ขึ้นก่อน
+            { createdAt: 'desc' }      // จากนั้นเรียงตามสินค้าใหม่ล่าสุด
+        ] 
+    });
+
+    // ส่งข้อมูลกลับไปที่หน้าเว็บ (ต้องแปลงเป็น JSON ก่อนเพื่อป้องกัน Error เรื่องวันที่)
+    return { 
+        props: { 
+            products: JSON.parse(JSON.stringify(products)) 
+        } 
+    };
+
+  } catch (e) {
+    // กรณีเกิดข้อผิดพลาด (เช่น ต่อ Database ไม่ติด) ให้ส่งอาเรย์ว่างกลับไป เว็บจะได้ไม่พัง
+    console.error("Failed to fetch products:", e);
+    return { props: { products: [] } };
+  }
 }

@@ -28,6 +28,7 @@ model Product {
  images      String   @default("[]")
 
  options     String   @default("[]")
+ isRecommended Boolean @default(false) 
 
   stockItems  StockItem[]
   orderItems  OrderItem[]
