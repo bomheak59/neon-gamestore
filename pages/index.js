@@ -57,16 +57,16 @@ export default function Home({ products, categories }) {
   const itemVariants = { hidden: { y: 30, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } } };
 
   return (
-    <div className="min-h-screen  text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
+    <div className="min-h-screen bg-[#030305] text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
       <Head><title>NEON STORE | The Future of Gaming</title></Head>
 
-      {/* 🔥🔥🔥 GAMING BACKGROUND SYSTEM (ใหม่) 🔥🔥🔥 */}
+      {/* 🔥🔥🔥 GAMING BACKGROUND SYSTEM (ปรับปรุงใหม่) 🔥🔥🔥 */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         {/* พื้นหลังดำ */}
         <div className="absolute inset-0 bg-[#020202]"></div>
         
-        {/* Cyber Grid Animation */}
-        <div className="cyber-grid opacity-30"></div>
+        {/* Cyber Grid Animation (ปรับให้ชัดขึ้น) */}
+        <div className="cyber-grid opacity-40"></div>
 
         {/* Moving Aurora Lights */}
         <motion.div 
@@ -80,10 +80,9 @@ export default function Home({ products, categories }) {
             className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-[150px]" 
         />
         
-        {/* Scanlines Overlay */}
-        <div className="scanlines opacity-10"></div>
-        {/* Noise Overlay */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]"></div>
+        {/* Scanlines & Noise (ปรับให้จางลง) */}
+        <div className="scanlines opacity-5"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02]"></div>
       </div>
 
       {/* NAVBAR */}
@@ -134,7 +133,7 @@ export default function Home({ products, categories }) {
           <div className="hidden lg:flex items-center gap-3"></div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu Dropdown */}
         <AnimatePresence>
             {isMobileMenuOpen && (
                 <motion.div 
@@ -182,27 +181,24 @@ export default function Home({ products, categories }) {
       </div>
 
       {/* HERO SECTION */}
-      <div className="relative pt-32 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
+      <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
         <div className="relative z-10 max-w-4xl mx-auto">
-          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.2)]">
-                <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
-            </div>
-            
-            <h1 className="text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter mb-4 leading-tight drop-shadow-[0_0_30px_rgba(6,182,212,0.6)] text-white">
-                <span className="block mb-2">WELCOME TO</span>
-                <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-pulse-slow">
-                    <Typewriter options={{ strings: ['NEONSTORE', 'GAME ID SHOP', 'TOPUP SERVICE'], autoStart: true, loop: true, delay: 75, deleteSpeed: 50 }} />
-                </div>
-            </h1>
-            
-            <p className="mt-6 text-sm sm:text-lg text-gray-300 mb-10 leading-relaxed font-medium px-4 max-w-2xl mx-auto drop-shadow-md">
-                ศูนย์รวมไอดีเกมและบริการเติมเกมที่ครบวงจรที่สุด <br className="hidden sm:block"/>
-                <span className="text-cyan-400 font-bold">ปลอดภัย 100%</span> • <span className="text-purple-400 font-bold">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400 font-bold">ดูแลตลอด 24 ชม.</span>
-            </p>
-          </motion.div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
+          </div>
           
-          {/* Stats */}
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-4 leading-tight drop-shadow-2xl">
+            <span className="block text-white mb-2 text-shadow-sm">ยินดีต้อนรับสู่</span>
+            <div className="min-h-[1.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                <Typewriter options={{ strings: ['NEONSTORE', 'GAME ID SHOP', 'TOPUP SERVICE'], autoStart: true, loop: true, delay: 75, deleteSpeed: 50 }} />
+            </div>
+          </h1>
+          
+          <p className="mt-4 text-sm sm:text-lg text-gray-400 mb-8 leading-relaxed font-medium px-4">
+             ศูนย์รวมไอดีเกมและบริการเติมเกมที่ครบวงจรที่สุด <br className="hidden sm:block"/>
+             <span className="text-cyan-400">ปลอดภัย 100%</span> • <span className="text-purple-400">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400">ดูแลตลอด 24 ชม.</span>
+          </p>
+          
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
              <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
              <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
@@ -212,20 +208,30 @@ export default function Home({ products, categories }) {
         </div>
       </div>
 
-      {/* CATEGORIES & FILTER */}
+      {/* 🔥🔥🔥 ส่วนเลือกหมวดหมู่ (Categories) 🔥🔥🔥 */}
       {categories.length > 0 && (
           <div className="max-w-8xl mx-auto px-6 mb-12 relative z-10">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-1.5 h-8 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-full shadow-[0_0_10px_cyan]"></div>
-                <h2 className="text-2xl font-bold text-white tracking-wide">เลือกหมวดหมู่</h2>
+                <div className="w-1.5 h-8 bg-purple-500 rounded-full shadow-[0_0_10px_purple]"></div>
+                <h2 className="text-2xl font-bold text-white">เลือกหมวดหมู่</h2>
             </div>
             
-            <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide mask-fade-right">
-                <button onClick={() => setSelectedCategory('All')} className={`flex items-center gap-2 px-6 py-3 rounded-2xl border transition-all whitespace-nowrap font-bold ${selectedCategory === 'All' ? 'bg-cyan-600 border-cyan-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-cyan-500/50'}`}>
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {/* ปุ่มทั้งหมด */}
+                <button 
+                    onClick={() => setSelectedCategory('All')}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all whitespace-nowrap font-bold ${selectedCategory === 'All' ? 'bg-cyan-600 border-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-cyan-500/50'}`}
+                >
                     <LayoutGrid size={18}/> ทั้งหมด
                 </button>
+
+                {/* รายการหมวดหมู่จาก DB */}
                 {categories.map((cat) => (
-                    <button key={cat.id} onClick={() => setSelectedCategory(cat.name)} className={`flex items-center gap-3 px-5 py-2 rounded-2xl border transition-all whitespace-nowrap group ${selectedCategory === cat.name ? 'bg-white/10 border-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-white/30'}`}>
+                    <button 
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.name)}
+                        className={`flex items-center gap-3 px-5 py-2 rounded-xl border transition-all whitespace-nowrap group ${selectedCategory === cat.name ? 'bg-white/10 border-cyan-500 text-white' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-white/30'}`}
+                    >
                         {cat.imageUrl && <img src={cat.imageUrl} className="w-6 h-6 rounded-lg object-cover group-hover:scale-110 transition-transform"/>}
                         <span className="font-bold">{cat.name}</span>
                     </button>
@@ -238,40 +244,57 @@ export default function Home({ products, categories }) {
       <main id="shop-section" className="max-w-8xl mx-auto px-6 pb-32 relative z-10">
         <div className="flex items-center justify-between mb-12">
           <h2 className="text-3xl font-black text-white flex items-center gap-3 uppercase tracking-wider">
-            <span className="w-2 h-8 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-full shadow-[0_0_15px_cyan]"></span> 
+            <span className="w-1 h-8 bg-cyan-500 rounded-full shadow-[0_0_15px_cyan]"></span> 
             {selectedCategory === 'All' ? 'สินค้าแนะนำ' : `รายการ: ${selectedCategory}`}
           </h2>
         </div>
 
         {displayedProducts.length === 0 ? (
-             <div className="text-center py-32 text-gray-500 bg-white/5 rounded-3xl border border-white/10 border-dashed">
-                <p className="text-2xl font-bold mb-2">ยังไม่มีสินค้าในหมวดนี้</p>
-                <p className="text-sm opacity-70">โปรดเลือกหมวดหมู่อื่น</p>
+             <div className="text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-white/10">
+                <p className="text-lg font-bold mb-2">ยังไม่มีสินค้าในหมวดนี้</p>
              </div>
         ) : (
-            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" initial="hidden" animate="visible" variants={containerVariants}>
+            <motion.div 
+                key={selectedCategory}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                initial="hidden" animate="visible" variants={containerVariants}
+            >
             {displayedProducts.map((product) => (
                 <motion.div key={product.id} variants={itemVariants}>
                     <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
-                        <div className="group h-full relative bg-[#0f0f0f] border border-white/10 rounded-[2rem] overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-2xl hover:shadow-[0_0_50px_rgba(6,182,212,0.15)]">
+                        <div className="group h-full relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-2xl hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]">
                             
-                            <div className="h-64 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent z-10 opacity-90"></div>
+                            <div className="h-60 overflow-hidden relative">
+                              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 opacity-90"></div>
                               <img src={product.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                              {product.discount > 0 && (<div className="absolute top-4 right-4 z-30"><span className="bg-red-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow-lg rotate-3 group-hover:rotate-0 transition-transform">-{product.discount}%</span></div>)}
-                              <div className="absolute top-4 left-4 z-20"><span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 px-3 py-1.5 rounded-xl backdrop-blur-md border shadow-lg ${product.type === 'TOPUP' ? 'bg-green-950/80 border-green-500/50 text-green-400' : 'bg-purple-950/80 border-purple-500/50 text-purple-300'}`}><Cpu size={12}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}</span></div>
+                              
+                              {product.discount > 0 && (
+                                <div className="absolute top-3 right-3 z-30">
+                                    <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">-{product.discount}%</span>
+                                </div>
+                              )}
+
+                              <div className="absolute top-3 left-3 z-20">
+                                 <span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded backdrop-blur-md border ${product.type === 'TOPUP' ? 'bg-green-500/10 border-green-500/50 text-green-400' : 'bg-purple-500/10 border-purple-500/50 text-purple-300'}`}>
+                                   <Cpu size={10}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}
+                                 </span>
+                              </div>
                             </div>
 
                             <div className="p-6 relative z-20 flex flex-col h-auto">
                               <h3 className="text-xl font-bold text-white mb-2 truncate group-hover:text-cyan-400 transition-colors">{product.name}</h3>
                               <p className="text-gray-500 text-xs mb-6 line-clamp-2 font-medium">{product.description}</p>
+                              
                               <div className="mt-auto flex justify-between items-end border-t border-dashed border-white/10 pt-4">
                                 <div className="flex flex-col">
                                   <span className="text-[10px] text-gray-500 font-bold mb-1 uppercase tracking-wider">Starting at</span>
-                                  <div className="flex items-center gap-2"><span className="text-3xl font-black text-white">฿{product.price}</span>{product.discount > 0 && (<span className="text-xs text-gray-600 line-through font-bold">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}</div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-3xl font-black text-white">฿{product.price}</span>
+                                    {product.discount > 0 && (<span className="text-xs text-gray-600 line-through font-bold">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
+                                  </div>
                                 </div>
                                 <Link href={`/product/${product.id}`}>
-                                  <button className="bg-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1 group/btn shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                                  <button className="bg-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1 group/btn shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                                     BUY <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/>
                                   </button>
                                 </Link>
@@ -285,54 +308,46 @@ export default function Home({ products, categories }) {
         )}
       </main>
 
-      <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center relative overflow-hidden">
-         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02]"></div>
-         <h2 className="text-3xl font-black text-white mb-4 tracking-tighter">NEON<span className="text-cyan-500">STORE</span></h2>
-         <p className="text-gray-500 text-xs">© 2025 All rights reserved.</p>
-      </footer>
+      <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">© 2025 All rights reserved.</p></footer>
       
       {/* Styles */}
       <style jsx>{`
-        /* ซ่อน Scrollbar แต่ยังเลื่อนได้ */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* มุมมอง 3D */
         .perspective-container { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         
-        /* อนิเมชั่นตาราง Cyber Grid */
+        /* 🔥 ปรับปรุง Grid ให้คมชัดขึ้น (เพิ่ม opacity เป็น 0.1) 🔥 */
         .cyber-grid { 
             position: absolute; 
             width: 200%; height: 200%; 
             top: -50%; left: -50%; 
-            background-image: linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px), 
-                              linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px); 
+            background-image: linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px); 
             background-size: 50px 50px; 
             transform: rotateX(60deg); 
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); 
             animation: gridMove 20s linear infinite; 
-            z-index: -1; /* อยู่หลังสุด */
+            z-index: -1; 
         }
 
-        /* 🔥 Scanlines (เส้นทีวี) - ปรับให้ชัดขึ้น 🔥 */
+        /* 🔥 ปรับ Scanlines ให้จางลงเพื่อไม่รกตา 🔥 */
         .scanlines {
             background: linear-gradient(
                 to bottom,
                 rgba(255,255,255,0),
                 rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.2) 50%, /* เพิ่มความเข้มเงา */
-                rgba(0,0,0,0.2)
+                rgba(0,0,0,0.05) 50%, 
+                rgba(0,0,0,0.05)
             );
-            background-size: 100% 4px; /* ขนาดเส้น */
+            background-size: 100% 3px; 
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none; /* ให้คลิกทะลุได้ */
-            z-index: 10; /* อยู่บนสุด */
-            mix-blend-mode: overlay; /* ผสมกับสีพื้นหลังให้ดูเนียน */
+            pointer-events: none; 
+            z-index: 10; 
+            mix-blend-mode: overlay; 
         }
 
-        /* อนิเมชั่นเลื่อน Grid */
         .animate-gridMove { animation: gridMove 1s linear infinite; }
         @keyframes gridMove { 
             0% { transform: rotateX(60deg) translateY(0); } 
@@ -345,45 +360,45 @@ export default function Home({ products, categories }) {
 
 // Components
 function StatBox({ icon: Icon, label, value, color }) {
-    const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
-    return (
-        <div className="bg-[#0f0f0f] border border-white/5 p-6 rounded-3xl flex flex-col items-center justify-center hover:border-white/10 transition-all hover:-translate-y-2 duration-300 shadow-lg group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className={`p-3 rounded-2xl bg-white/5 mb-3 group-hover:bg-white/10 transition-colors ${colors[color]} bg-opacity-10`}>
-                 <Icon size={28} />
-            </div>
-            <div className="text-3xl font-black text-white mb-1 drop-shadow-md">{value}</div>
-            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-bold">{label}</div>
-        </div>
-    );
+    const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
+    return (
+        <div className="bg-[#0f0f0f] border border-white/5 p-6 rounded-3xl flex flex-col items-center justify-center hover:border-white/10 transition-all hover:-translate-y-2 duration-300 shadow-lg group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className={`p-3 rounded-2xl bg-white/5 mb-3 group-hover:bg-white/10 transition-colors ${colors[color]} bg-opacity-10`}>
+                 <Icon size={28} />
+            </div>
+            <div className="text-3xl font-black text-white mb-1 drop-shadow-md">{value}</div>
+            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-bold">{label}</div>
+        </div>
+    );
 }
 
 function FeatureCard({ icon: Icon, title, desc, color }) {
-    const colors = { 
-        cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30', 
-        green: 'bg-green-500/10 text-green-400 border-green-500/30', 
-        yellow: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' 
-    };
-    return (
-        <div className={`p-6 rounded-2xl border ${colors[color].split(' ')[2]} bg-[#0a0a0a] hover:-translate-y-1 transition-transform duration-300 shadow-lg`}>
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}>
-                <Icon size={24} />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
-            <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
-        </div>
-    );
+    const colors = { 
+        cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30', 
+        green: 'bg-green-500/10 text-green-400 border-green-500/30', 
+        yellow: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' 
+    };
+    return (
+        <div className={`p-6 rounded-2xl border ${colors[color].split(' ')[2]} bg-[#0a0a0a] hover:-translate-y-1 transition-transform duration-300 shadow-lg`}>
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}>
+                <Icon size={24} />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+            <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
+        </div>
+    );
 }
 
 export async function getServerSideProps() {
-  try {
-    const prisma = (await import('@/lib/prisma')).default;
-    const products = await prisma.product.findMany({ 
-        where: { isRecommended: true }, 
-        orderBy: { createdAt: 'desc' } 
-    });
-    const categories = await prisma.category.findMany({ orderBy: { createdAt: 'desc' } });
-    
-    return { props: { products: JSON.parse(JSON.stringify(products)), categories: JSON.parse(JSON.stringify(categories)) } };
-  } catch (e) { return { props: { products: [], categories: [] } }; }
+  try {
+    const prisma = (await import('@/lib/prisma')).default;
+    const products = await prisma.product.findMany({ 
+        where: { isRecommended: true }, 
+        orderBy: { createdAt: 'desc' } 
+    });
+    const categories = await prisma.category.findMany({ orderBy: { createdAt: 'desc' } });
+    
+    return { props: { products: JSON.parse(JSON.stringify(products)), categories: JSON.parse(JSON.stringify(categories)) } };
+  } catch (e) { return { props: { products: [], categories: [] } }; }
 }
