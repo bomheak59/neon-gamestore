@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { LayoutDashboard, ShoppingBag, Package, LogOut, Zap, Menu, X } from 'lucide-react'; // เพิ่ม Menu, X
+import { LayoutDashboard, ShoppingBag, Package, LogOut, Zap, Menu, X, Layers } from 'lucide-react'; // เพิ่ม Layers
 import { useState } from 'react';
 
 export default function AdminLayout({ children }) {
@@ -19,6 +19,7 @@ export default function AdminLayout({ children }) {
     { name: 'ภาพรวม (Dashboard)', icon: LayoutDashboard, path: '/admin' },
     { name: 'รายการสั่งซื้อ (Orders)', icon: ShoppingBag, path: '/admin/orders' },
     { name: 'สินค้า (Products)', icon: Package, path: '/admin/products' },
+    { name: 'หมวดหมู่ (Categories)', icon: Layers, path: '/admin/categories' }, // 🔥 เมนูใหม่ที่เพิ่มเข้ามา
     { name: 'ลงสินค้าใหม่', icon: Zap, path: '/admin/add' },
   ];
 

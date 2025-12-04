@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity } from 'lucide-react';
+import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity, LayoutGrid } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -11,17 +11,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
 import Tilt from 'react-parallax-tilt';
 
-export default function Home({ products }) {
+export default function Home({ products, categories }) {
   const router = useRouter();
   
   // State
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [marqueeItems, setMarqueeItems] = useState([]);
+  
+  // 🔥 State สำหรับกรองหมวดหมู่ 🔥
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   // Categories Logic
   const appKeywords = ['Netflix', 'Youtube', 'Spotify', 'Viu', 'Disney', 'Prime', 'App', 'Canva', 'Office', 'Windows', 'Premium'];
   const safeProducts = products || [];
   
+  // กรองสินค้าที่จะแสดง (จากสินค้าแนะนำทั้งหมด)
+  const displayedProducts = selectedCategory === 'All' 
+    ? safeProducts 
+    : safeProducts.filter(p => p.category === selectedCategory);
+
   const topupCategories = [...new Set(safeProducts.filter(p => p.type === 'TOPUP').map(p => p.category))];
   const appCategories = [...new Set(safeProducts.filter(p => appKeywords.some(keyword => p.category.toLowerCase().includes(keyword.toLowerCase()))).map(p => p.category))];
   const gameIdCategories = [...new Set(safeProducts.filter(p => p.type === 'ID_ACCOUNT' && !appKeywords.some(keyword => p.category.toLowerCase().includes(keyword.toLowerCase()))).map(p => p.category))];
@@ -64,7 +72,6 @@ export default function Home({ products }) {
           
           {/* Logo & Mobile Menu Button */}
           <div className="flex items-center gap-4">
-             {/* ปุ่มเมนูมือถือ */}
              <button className="lg:hidden text-gray-300 hover:text-white p-1" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
              </button>
@@ -115,12 +122,10 @@ export default function Home({ products }) {
                     className="lg:hidden bg-[#0a0a0a] border-b border-white/10 overflow-hidden shadow-2xl"
                 >
                     <div className="p-4 space-y-3">
-                        
                         <div className="grid grid-cols-2 gap-2 pt-2">
                             <Link href="/"><div className="p-3 rounded-xl bg-white/5 text-gray-200 font-bold flex items-center justify-center gap-2"><Zap size={16}/> หน้าแรก</div></Link>
                             <Link href="/topup"><div className="p-3 rounded-xl bg-green-500/10 text-green-400 font-bold flex items-center justify-center gap-2"><CreditCard size={16}/> เติมเกม</div></Link>
                         </div>
-
                         <div className="pt-2">
                              <p className="text-xs text-gray-500 font-bold uppercase mb-2 ml-1">หมวดหมู่แนะนำ</p>
                              <div className="flex flex-wrap gap-2">
@@ -158,14 +163,9 @@ export default function Home({ products }) {
 
       {/* HERO SECTION */}
       <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
-        <div className="absolute inset-0 -z-20 transform-style-3d overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-          <div className="cyber-grid animate-gridMove opacity-30"></div>
-          <div className="absolute top-[-20%] left-[20%] w-[600px] h-[600px] bg-cyan-600/20 rounded-full blur-[120px] opacity-50"></div>
-          <div className="absolute top-[-10%] right-[10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] opacity-50"></div>
-        </div>
-
+        {/* ... (ส่วน Hero เหมือนเดิม) ... */}
         <div className="relative z-10 max-w-4xl mx-auto">
+          {/* ... (Badges) ... */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.2)]">
             <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
           </div>
@@ -182,7 +182,6 @@ export default function Home({ products }) {
              <span className="text-cyan-400">ปลอดภัย 100%</span> • <span className="text-purple-400">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400">ดูแลตลอด 24 ชม.</span>
           </p>
           
-          {/* 🔥 Trust Stats 🔥 */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
              <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
              <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
@@ -192,87 +191,112 @@ export default function Home({ products }) {
         </div>
       </div>
 
-      {/* 🔥 WHY CHOOSE US 🔥 */}
-      <div className="max-w-7xl mx-auto px-6 pb-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <FeatureCard icon={Clock} title="จัดส่งอัตโนมัติ" desc="ได้รับสินค้าทันทีภายใน 1 นาที ด้วยระบบ AI อัจฉริยะ ตลอด 24 ชม." color="yellow" />
-              <FeatureCard icon={ShieldCheck} title="รับประกันสินค้า" desc="สินค้าทุกชิ้นผ่านการตรวจสอบ มั่นใจได้ 100% มีปัญหาเคลมฟรี" color="green" />
-              <FeatureCard icon={Headphones} title="ซัพพอร์ตมืออาชีพ" desc="ทีมงานพร้อมดูแลและแก้ปัญหาให้คุณตลอดเวลา ไม่ทิ้งลูกค้า" color="cyan" />
+      {/* 🔥🔥🔥 ส่วนเลือกหมวดหมู่ (Categories) 🔥🔥🔥 */}
+      {categories.length > 0 && (
+          <div className="max-w-8xl mx-auto px-6 mb-12 relative z-10">
+            <div className="flex items-center gap-3 mb-6">
+                <div className="w-1.5 h-8 bg-purple-500 rounded-full shadow-[0_0_10px_purple]"></div>
+                <h2 className="text-2xl font-bold text-white">เลือกหมวดหมู่</h2>
+            </div>
+            
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {/* ปุ่มทั้งหมด */}
+                <button 
+                    onClick={() => setSelectedCategory('All')}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all whitespace-nowrap font-bold ${selectedCategory === 'All' ? 'bg-cyan-600 border-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-cyan-500/50'}`}
+                >
+                    <LayoutGrid size={18}/> ทั้งหมด
+                </button>
+
+                {/* รายการหมวดหมู่จาก DB */}
+                {categories.map((cat) => (
+                    <button 
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.name)}
+                        className={`flex items-center gap-3 px-5 py-2 rounded-xl border transition-all whitespace-nowrap group ${selectedCategory === cat.name ? 'bg-white/10 border-cyan-500 text-white' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-white/30'}`}
+                    >
+                        {cat.imageUrl && <img src={cat.imageUrl} className="w-6 h-6 rounded-lg object-cover group-hover:scale-110 transition-transform"/>}
+                        <span className="font-bold">{cat.name}</span>
+                    </button>
+                ))}
+            </div>
           </div>
-      </div>
+      )}
 
       {/* PRODUCT GRID */}
       <main id="shop-section" className="max-w-8xl mx-auto px-6 pb-32 relative z-10">
         <div className="flex items-center justify-between mb-12">
           <h2 className="text-3xl font-black text-white flex items-center gap-3 uppercase tracking-wider">
             <span className="w-1 h-8 bg-cyan-500 rounded-full shadow-[0_0_15px_cyan]"></span> 
-            สินค้าแนะนำ
+            {selectedCategory === 'All' ? 'สินค้าแนะนำ' : `รายการ: ${selectedCategory}`}
           </h2>
         </div>
 
-        <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}
-        >
-          {/* 🔥 แสดงเฉพาะสินค้าแนะนำ (safeProducts ที่กรองมาแล้ว) 🔥 */}
-          {safeProducts.length === 0 ? (
-            <div className="col-span-full text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-white/10">
-               <p className="text-lg font-bold mb-2">ยังไม่มีสินค้าแนะนำ</p>
-               <p className="text-sm">โปรดรอติดตามสินค้าใหม่เร็วๆ นี้</p>
-            </div>
-          ) : (
-            safeProducts.map((product) => (
-              <motion.div key={product.id} variants={itemVariants}>
-                  <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
-                      <div className="group h-full relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-2xl hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]">
-                        
-                        <div className="h-60 overflow-hidden relative">
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 opacity-90"></div>
-                          <img src={product.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                          
-                          {product.discount > 0 && (
-                            <div className="absolute top-3 right-3 z-30">
-                                <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">-{product.discount}%</span>
-                            </div>
-                          )}
+        {displayedProducts.length === 0 ? (
+             <div className="text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-white/10">
+                <p className="text-lg font-bold mb-2">ยังไม่มีสินค้าในหมวดนี้</p>
+             </div>
+        ) : (
+            <motion.div 
+                key={selectedCategory}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                initial="hidden" animate="visible" variants={containerVariants}
+            >
+            {displayedProducts.map((product) => (
+                <motion.div key={product.id} variants={itemVariants}>
+                    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
+                        <div className="group h-full relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-2xl hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]">
+                            
+                            <div className="h-60 overflow-hidden relative">
+                              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 opacity-90"></div>
+                              <img src={product.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                              
+                              {product.discount > 0 && (
+                                <div className="absolute top-3 right-3 z-30">
+                                    <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">-{product.discount}%</span>
+                                </div>
+                              )}
 
-                          <div className="absolute top-3 left-3 z-20">
-                             <span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded backdrop-blur-md border ${product.type === 'TOPUP' ? 'bg-green-500/10 border-green-500/50 text-green-400' : 'bg-purple-500/10 border-purple-500/50 text-purple-300'}`}>
-                               <Cpu size={10}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}
-                             </span>
-                          </div>
-                        </div>
-
-                        <div className="p-6 relative z-20 flex flex-col h-auto">
-                          <h3 className="text-xl font-bold text-white mb-2 truncate group-hover:text-cyan-400 transition-colors">{product.name}</h3>
-                          <p className="text-gray-500 text-xs mb-6 line-clamp-2 font-medium">{product.description}</p>
-                          
-                          <div className="mt-auto flex justify-between items-end border-t border-dashed border-white/10 pt-4">
-                            <div className="flex flex-col">
-                              <span className="text-[10px] text-gray-500 font-bold mb-1 uppercase tracking-wider">Starting at</span>
-                              <div className="flex items-center gap-2">
-                                <span className="text-3xl font-black text-white">฿{product.price}</span>
-                                {product.discount > 0 && (<span className="text-xs text-gray-600 line-through">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
+                              <div className="absolute top-3 left-3 z-20">
+                                 <span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1 px-3 py-1 rounded backdrop-blur-md border ${product.type === 'TOPUP' ? 'bg-green-500/10 border-green-500/50 text-green-400' : 'bg-purple-500/10 border-purple-500/50 text-purple-300'}`}>
+                                   <Cpu size={10}/> {product.type === 'TOPUP' ? 'AUTO' : 'ID'}
+                                 </span>
                               </div>
                             </div>
-                            <Link href={`/product/${product.id}`}>
-                              <button className="bg-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1 group/btn shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                                BUY <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/>
-                              </button>
-                            </Link>
-                          </div>
+
+                            <div className="p-6 relative z-20 flex flex-col h-auto">
+                              <h3 className="text-xl font-bold text-white mb-2 truncate group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                              <p className="text-gray-500 text-xs mb-6 line-clamp-2 font-medium">{product.description}</p>
+                              
+                              <div className="mt-auto flex justify-between items-end border-t border-dashed border-white/10 pt-4">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] text-gray-500 font-bold mb-1 uppercase tracking-wider">Starting at</span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-3xl font-black text-white">฿{product.price}</span>
+                                    {product.discount > 0 && (<span className="text-xs text-gray-600 line-through">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
+                                  </div>
+                                </div>
+                                <Link href={`/product/${product.id}`}>
+                                  <button className="bg-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1 group/btn shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                                    BUY <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform"/>
+                                  </button>
+                                </Link>
+                              </div>
+                            </div>
                         </div>
-                      </div>
-                  </Tilt>
-              </motion.div>
-            ))
-          )}
-        </motion.div>
+                    </Tilt>
+                </motion.div>
+            ))}
+            </motion.div>
+        )}
       </main>
 
       <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">© 2025 All rights reserved.</p></footer>
       
+      {/* Styles */}
       <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .perspective-container { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         .animate-gridMove { animation: gridMove 1s linear infinite; }
@@ -282,11 +306,11 @@ export default function Home({ products }) {
   );
 }
 
-// Components
+// Components ย่อย
 function StatBox({ icon: Icon, label, value, color }) {
     const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
     return (
-        <div className="bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md flex flex-col items-center justify-center hover:bg-white/10 transition-all hover:-translate-y-1 duration-300">
+        <div className="bg-white/5 border border-white/5 p-4 rounded-2xl backdrop-blur-md flex flex-col items-center justify-center hover:bg-white/10 transition-all hover:-translate-y-1 duration-300">
             <Icon size={28} className={`${colors[color]} mb-2`} />
             <div className="text-2xl font-black text-white">{value}</div>
             <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">{label}</div>
@@ -311,14 +335,25 @@ function FeatureCard({ icon: Icon, title, desc, color }) {
     );
 }
 
-// 🔥 ดึงเฉพาะสินค้าแนะนำ (isRecommended=true) 🔥
+// 🔥 ดึงข้อมูลสินค้าแนะนำ & หมวดหมู่ 🔥
 export async function getServerSideProps() {
   try {
     const prisma = (await import('@/lib/prisma')).default;
+    
+    // ดึงเฉพาะสินค้าแนะนำ
     const products = await prisma.product.findMany({ 
-        where: { isRecommended: true }, // กรองเอาแค่ที่ติ๊กดาว
+        where: { isRecommended: true }, 
         orderBy: { createdAt: 'desc' } 
     });
-    return { props: { products: JSON.parse(JSON.stringify(products)) } };
-  } catch (e) { return { props: { products: [] } }; }
+
+    // ดึงหมวดหมู่ (เพื่อเอาไปโชว์ในแถบเลือกหมวดหมู่)
+    const categories = await prisma.category.findMany({ orderBy: { createdAt: 'desc' } });
+    
+    return { 
+        props: { 
+            products: JSON.parse(JSON.stringify(products)),
+            categories: JSON.parse(JSON.stringify(categories))
+        } 
+    };
+  } catch (e) { return { props: { products: [], categories: [] } }; }
 }

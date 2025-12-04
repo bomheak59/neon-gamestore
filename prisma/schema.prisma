@@ -72,3 +72,11 @@ model OrderItem {
   // รหัสสินค้าที่ส่งให้ลูกค้าแล้ว
   deliveredContent String? 
 }
+
+model Category {
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  imageUrl      String
+  isRecommended Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
