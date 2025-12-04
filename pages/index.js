@@ -25,7 +25,7 @@ export default function Home({ products, categories }) {
   const appKeywords = ['Netflix', 'Youtube', 'Spotify', 'Viu', 'Disney', 'Prime', 'App', 'Canva', 'Office', 'Windows', 'Premium'];
   const safeProducts = products || [];
   
-  // กรองสินค้าที่จะแสดง
+  // กรองสินค้าที่จะแสดง (จากสินค้าแนะนำทั้งหมด)
   const displayedProducts = selectedCategory === 'All' 
     ? safeProducts 
     : safeProducts.filter(p => p.category === selectedCategory);
@@ -57,32 +57,24 @@ export default function Home({ products, categories }) {
   const itemVariants = { hidden: { y: 30, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } } };
 
   return (
-    <div className="min-h-screen  text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
+    <div className="min-h-screen text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
       <Head><title>NEON STORE | The Future of Gaming</title></Head>
 
-      {/* 🔥🔥🔥 GAMING BACKGROUND SYSTEM (ปรับปรุงใหม่) 🔥🔥🔥 */}
+      {/* 🔥🔥🔥 BACKGROUND SYSTEM (อัปเกรดใหม่: Cyberpunk Grid) 🔥🔥🔥 */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         {/* พื้นหลังดำ */}
         <div className="absolute inset-0 bg-[#020202]"></div>
         
-        {/* Cyber Grid Animation (ปรับให้ชัดขึ้น) */}
-        <div className="cyber-grid opacity-40"></div>
-
-        {/* Moving Aurora Lights */}
-        <motion.div 
-            animate={{ x: [-100, 100, -100], y: [-50, 50, -50], opacity: [0.3, 0.6, 0.3] }} 
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[150px]" 
-        />
-        <motion.div 
-            animate={{ x: [100, -100, 100], y: [50, -50, 50], opacity: [0.3, 0.6, 0.3] }} 
-            transition={{ duration: 18, repeat: Infinity, ease: "linear", delay: 2 }}
-            className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-[150px]" 
-        />
+        {/* Cyber Grid Animation (เพิ่มตรงนี้) */}
+        <div className="cyber-grid opacity-20"></div>
         
-        {/* Scanlines & Noise (ปรับให้จางลง) */}
-        <div className="scanlines opacity-5"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02]"></div>
+        {/* Floating Orbs (ของเดิม) */}
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-[-20%] left-[20%] w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[150px]" />
+        <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute top-[-10%] right-[10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px]" />
+        
+        {/* Scanlines & Noise (เพิ่มเอฟเฟกต์จอเกม) */}
+        <div className="scanlines opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]"></div>
       </div>
 
       {/* NAVBAR */}
@@ -181,24 +173,27 @@ export default function Home({ products, categories }) {
       </div>
 
       {/* HERO SECTION */}
-      <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
+      <div className="relative pt-32 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
         <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
-          </div>
-          
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-4 leading-tight drop-shadow-2xl">
-            <span className="block text-white mb-2 text-shadow-sm">ยินดีต้อนรับสู่</span>
-            <div className="min-h-[1.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-                <Typewriter options={{ strings: ['NEONSTORE', 'GAME ID SHOP', 'TOPUP SERVICE'], autoStart: true, loop: true, delay: 75, deleteSpeed: 50 }} />
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+                <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
             </div>
-          </h1>
+            
+            <h1 className="text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter mb-4 leading-tight drop-shadow-[0_0_30px_rgba(6,182,212,0.6)] text-white">
+                <span className="block mb-2">WELCOME TO</span>
+                <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-pulse-slow">
+                    <Typewriter options={{ strings: ['NEONSTORE', 'GAME ID SHOP', 'TOPUP SERVICE'], autoStart: true, loop: true, delay: 75, deleteSpeed: 50 }} />
+                </div>
+            </h1>
+            
+            <p className="mt-6 text-sm sm:text-lg text-gray-300 mb-10 leading-relaxed font-medium px-4 max-w-2xl mx-auto drop-shadow-md">
+                ศูนย์รวมไอดีเกมและบริการเติมเกมที่ครบวงจรที่สุด <br className="hidden sm:block"/>
+                <span className="text-cyan-400 font-bold">ปลอดภัย 100%</span> • <span className="text-purple-400 font-bold">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400 font-bold">ดูแลตลอด 24 ชม.</span>
+            </p>
+          </motion.div>
           
-          <p className="mt-4 text-sm sm:text-lg text-gray-400 mb-8 leading-relaxed font-medium px-4">
-             ศูนย์รวมไอดีเกมและบริการเติมเกมที่ครบวงจรที่สุด <br className="hidden sm:block"/>
-             <span className="text-cyan-400">ปลอดภัย 100%</span> • <span className="text-purple-400">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400">ดูแลตลอด 24 ชม.</span>
-          </p>
-          
+          {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
              <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
              <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
@@ -208,7 +203,7 @@ export default function Home({ products, categories }) {
         </div>
       </div>
 
-      {/* 🔥🔥🔥 ส่วนเลือกหมวดหมู่ (Categories) 🔥🔥🔥 */}
+      {/* CATEGORIES & FILTER */}
       {categories.length > 0 && (
           <div className="max-w-8xl mx-auto px-6 mb-12 relative z-10">
             <div className="flex items-center gap-3 mb-6">
@@ -217,15 +212,12 @@ export default function Home({ products, categories }) {
             </div>
             
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                {/* ปุ่มทั้งหมด */}
                 <button 
                     onClick={() => setSelectedCategory('All')}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all whitespace-nowrap font-bold ${selectedCategory === 'All' ? 'bg-cyan-600 border-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-cyan-500/50'}`}
                 >
                     <LayoutGrid size={18}/> ทั้งหมด
                 </button>
-
-                {/* รายการหมวดหมู่จาก DB */}
                 {categories.map((cat) => (
                     <button 
                         key={cat.id}
@@ -290,7 +282,7 @@ export default function Home({ products, categories }) {
                                   <span className="text-[10px] text-gray-500 font-bold mb-1 uppercase tracking-wider">Starting at</span>
                                   <div className="flex items-center gap-2">
                                     <span className="text-3xl font-black text-white">฿{product.price}</span>
-                                    {product.discount > 0 && (<span className="text-xs text-gray-600 line-through font-bold">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
+                                    {product.discount > 0 && (<span className="text-xs text-gray-600 line-through">฿{Math.round(product.price * (100 / (100 - product.discount)))}</span>)}
                                   </div>
                                 </div>
                                 <Link href={`/product/${product.id}`}>
@@ -317,48 +309,18 @@ export default function Home({ products, categories }) {
         .perspective-container { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         
-        /* 🔥 ปรับปรุง Grid ให้คมชัดขึ้น (เพิ่ม opacity เป็น 0.1) 🔥 */
-        .cyber-grid { 
-            position: absolute; 
-            width: 200%; height: 200%; 
-            top: -50%; left: -50%; 
-            background-image: linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), 
-                              linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px); 
-            background-size: 50px 50px; 
-            transform: rotateX(60deg); 
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); 
-            animation: gridMove 20s linear infinite; 
-            z-index: -1; 
-        }
-
-        /* 🔥 ปรับ Scanlines ให้จางลงเพื่อไม่รกตา 🔥 */
-        .scanlines {
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.05) 50%, 
-                rgba(0,0,0,0.05)
-            );
-            background-size: 100% 3px; 
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none; 
-            z-index: 10; 
-            mix-blend-mode: overlay; 
-        }
-
+        /* 🔥 Cyber Grid + Scanlines 🔥 */
+        .cyber-grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px); background-size: 40px 40px; transform: rotateX(60deg); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); animation: gridMove 20s linear infinite; }
+        .scanlines { background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1)); background-size: 100% 4px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 10; }
+        
         .animate-gridMove { animation: gridMove 1s linear infinite; }
-        @keyframes gridMove { 
-            0% { transform: rotateX(60deg) translateY(0); } 
-            100% { transform: rotateX(60deg) translateY(50px); } 
-        }
+        @keyframes gridMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(40px); } }
       `}</style>
     </div>
   );
 }
 
-// Components
+// Components ย่อย
 function StatBox({ icon: Icon, label, value, color }) {
     const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
     return (
