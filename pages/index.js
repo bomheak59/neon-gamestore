@@ -60,8 +60,7 @@ export default function Home({ products }) {
 
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-cyan-500/10 bg-[#050505]/90 backdrop-blur-2xl transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-          
+        
           {/* Logo & Mobile Menu Button */}
           <div className="flex items-center gap-4">
              {/* ปุ่มเมนูมือถือ */}
@@ -103,13 +102,7 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* Buttons ขวา (Login/Register) */}
-          <div className="flex items-center gap-3">
-             <button className="hidden sm:block px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-lg text-xs font-bold transition-all border border-white/10">เข้าสู่ระบบ</button>
-             <button className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all">สมัครสมาชิก</button>
-          </div>
-        </div>
-
+         
         {/* Mobile Menu */}
         <AnimatePresence>
             {isMobileMenuOpen && (
