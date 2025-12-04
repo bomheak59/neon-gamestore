@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Activity } from 'lucide-react';
+import { Zap, Gamepad2, ChevronRight, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Trophy, Users, Activity } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -49,13 +49,18 @@ export default function Home({ products }) {
   const itemVariants = { hidden: { y: 30, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } } };
 
   return (
-    <div className="min-h-screen bg-[#030305] text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
+    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden font-sans selection:bg-cyan-500/50 relative">
       <Head><title>NEON STORE | The Future of Gaming</title></Head>
 
-      {/* Background */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#050505] to-[#020202]">
-        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-[-20%] left-[20%] w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[150px]" />
-        <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute top-[-10%] right-[10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px]" />
+      {/* 🔥 GAMING BACKGROUND (Moving Grid) 🔥 */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[#020204]"></div>
+        {/* Grid Animation */}
+        <div className="cyber-grid opacity-20"></div>
+        
+        {/* Floating Glows */}
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-[-20%] left-[20%] w-[800px] h-[800px] bg-cyan-600/20 rounded-full blur-[150px]" />
+        <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute top-[-10%] right-[10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[150px]" />
       </div>
 
       {/* NAVBAR */}
@@ -102,8 +107,11 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* ❌ ปุ่ม Login/Register ถูกลบออกแล้วตรงนี้ ❌ */}
-          <div className="hidden lg:flex items-center gap-3"></div>
+          {/* Buttons ขวา (แทนที่ Search/Cart) */}
+          <div className="hidden lg:flex items-center gap-3">
+             <button className="px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg text-xs font-bold transition-all">LOGIN</button>
+             <button className="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-black rounded-lg text-xs font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all">REGISTER</button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -181,15 +189,6 @@ export default function Home({ products }) {
              <StatBox icon={Activity} label="Server Status" value="Online" color="purple" />
           </div>
         </div>
-      </div>
-
-      {/* 🔥 WHY CHOOSE US (เพิ่มโซนจุดเด่น) 🔥 */}
-      <div className="max-w-7xl mx-auto px-6 pb-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <FeatureCard icon={Clock} title="จัดส่งอัตโนมัติ" desc="ได้รับสินค้าทันทีภายใน 1 นาที ด้วยระบบ AI อัจฉริยะ ตลอด 24 ชม." color="yellow" />
-              <FeatureCard icon={ShieldCheck} title="รับประกันสินค้า" desc="สินค้าทุกชิ้นผ่านการตรวจสอบ มั่นใจได้ 100% มีปัญหาเคลมฟรี" color="green" />
-              <FeatureCard icon={Headphones} title="ซัพพอร์ตมืออาชีพ" desc="ทีมงานพร้อมดูแลและแก้ปัญหาให้คุณตลอดเวลา ไม่ทิ้งลูกค้า" color="cyan" />
-          </div>
       </div>
 
       {/* PRODUCT GRID */}
@@ -280,7 +279,7 @@ export default function Home({ products }) {
   );
 }
 
-// Components ย่อยสำหรับความสวยงาม
+// Components
 function StatBox({ icon: Icon, label, value, color }) {
     const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
     return (
@@ -288,23 +287,6 @@ function StatBox({ icon: Icon, label, value, color }) {
             <Icon size={28} className={`${colors[color]} mb-2`} />
             <div className="text-2xl font-black text-white">{value}</div>
             <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">{label}</div>
-        </div>
-    );
-}
-
-function FeatureCard({ icon: Icon, title, desc, color }) {
-    const colors = { 
-        cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30', 
-        green: 'bg-green-500/10 text-green-400 border-green-500/30', 
-        yellow: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' 
-    };
-    return (
-        <div className={`p-6 rounded-2xl border ${colors[color].split(' ')[2]} bg-[#0a0a0a] hover:-translate-y-1 transition-transform duration-300`}>
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}>
-                <Icon size={24} />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
-            <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
         </div>
     );
 }
