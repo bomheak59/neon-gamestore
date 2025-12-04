@@ -295,28 +295,14 @@ function FeatureCard({ icon: Icon, title, desc, color }) {
     );
 }
 
+// 🔥 ดึงเฉพาะสินค้าแนะนำ (isRecommended=true) 🔥
 export async function getServerSideProps() {
   try {
     const prisma = (await import('@/lib/prisma')).default;
-    
-    // ดึงข้อมูลสินค้า
     const products = await prisma.product.findMany({ 
-        orderBy: [
-            { isRecommended: 'desc' }, // 🌟 เรียงให้สินค้าแนะนำ (True) ขึ้นก่อน
-            { createdAt: 'desc' }      // จากนั้นเรียงตามสินค้าใหม่ล่าสุด
-        ] 
+        where: { isRecommended: true }, // กรองเอาแค่ที่ติ๊กดาว
+        orderBy: { createdAt: 'desc' } 
     });
-
-    // ส่งข้อมูลกลับไปที่หน้าเว็บ (ต้องแปลงเป็น JSON ก่อนเพื่อป้องกัน Error เรื่องวันที่)
-    return { 
-        props: { 
-            products: JSON.parse(JSON.stringify(products)) 
-        } 
-    };
-
-  } catch (e) {
-    // กรณีเกิดข้อผิดพลาด (เช่น ต่อ Database ไม่ติด) ให้ส่งอาเรย์ว่างกลับไป เว็บจะได้ไม่พัง
-    console.error("Failed to fetch products:", e);
-    return { props: { products: [] } };
-  }
+    return { props: { products: JSON.parse(JSON.stringify(products)) } };
+  } catch (e) { return { props: { products: [] } }; }
 }
