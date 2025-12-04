@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Marquee from "react-fast-marquee";
-import { Zap, Gamepad2, ShieldCheck, ChevronRight, Plus, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Star, Users, Trophy } from 'lucide-react';
+import { Zap, Gamepad2, ShieldCheck, ChevronRight, Monitor, CreditCard, MessageSquareQuote, Bell, Cpu, Sparkles, CheckCircle, Clock, Headphones, Menu, X, Users, Trophy, Star, Activity } from 'lucide-react';
 import SkeletonCard from '@/components/SkeletonCard';
 import { useState, useEffect } from 'react';
 
@@ -64,6 +64,7 @@ export default function Home({ products }) {
           
           {/* Logo & Mobile Menu Button */}
           <div className="flex items-center gap-4">
+             {/* ปุ่มเมนูมือถือ */}
              <button className="lg:hidden text-gray-300 hover:text-white p-1" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
              </button>
@@ -102,14 +103,14 @@ export default function Home({ products }) {
             <Link href="/reviews"><button className="flex items-center gap-2 px-3 py-2 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all"><MessageSquareQuote size={16} /> รีวิว</button></Link>
           </div>
 
-          {/* 🔥 ปุ่มติดต่อเรา / สมัครสมาชิก (แทนที่ช่องค้นหา) 🔥 */}
-          <div className="hidden lg:flex items-center gap-3">
-             <button className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-bold transition-all">เข้าสู่ระบบ</button>
-             <button className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all">สมัครสมาชิก</button>
+          {/* Buttons ขวา (Login/Register) */}
+          <div className="flex items-center gap-3">
+             <button className="hidden sm:block px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-lg text-xs font-bold transition-all border border-white/10">เข้าสู่ระบบ</button>
+             <button className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all">สมัครสมาชิก</button>
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        {/* Mobile Menu */}
         <AnimatePresence>
             {isMobileMenuOpen && (
                 <motion.div 
@@ -121,7 +122,6 @@ export default function Home({ products }) {
                             <Link href="/"><div className="p-3 rounded-xl bg-white/5 text-gray-200 font-bold flex items-center justify-center gap-2"><Zap size={16}/> หน้าแรก</div></Link>
                             <Link href="/topup"><div className="p-3 rounded-xl bg-green-500/10 text-green-400 font-bold flex items-center justify-center gap-2"><CreditCard size={16}/> เติมเกม</div></Link>
                         </div>
-
                         <div className="pt-2">
                              <p className="text-xs text-gray-500 font-bold uppercase mb-2 ml-1">หมวดหมู่แนะนำ</p>
                              <div className="flex flex-wrap gap-2">
@@ -157,9 +157,8 @@ export default function Home({ products }) {
         </div>
       </div>
 
-      {/* HERO SECTION (เพิ่มความน่าเชื่อถือ) */}
+      {/* HERO SECTION */}
       <div className="relative pt-24 pb-32 text-center px-4 z-10 overflow-hidden perspective-container">
-        {/* ... Background ... */}
         <div className="relative z-10 max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-xs font-bold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.2)]">
             <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span> GAME SHOP NO.1 IN THAILAND
@@ -177,23 +176,23 @@ export default function Home({ products }) {
              <span className="text-cyan-400">ปลอดภัย 100%</span> • <span className="text-purple-400">ส่งสินค้าอัตโนมัติ</span> • <span className="text-green-400">ดูแลตลอด 24 ชม.</span>
           </p>
           
-          {/* 🔥 Trust Stats (เพิ่มความน่าเชื่อถือ) 🔥 */}
-          <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-8 border-t border-white/10 pt-8">
-             <div className="text-center">
-                <div className="text-2xl font-black text-white flex justify-center items-center gap-1"><Users size={20} className="text-cyan-400"/> 10K+</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">ผู้ใช้งาน</div>
-             </div>
-             <div className="text-center border-l border-white/10">
-                <div className="text-2xl font-black text-white flex justify-center items-center gap-1"><CheckCircle size={20} className="text-green-400"/> 100%</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">ปลอดภัย</div>
-             </div>
-             <div className="text-center border-l border-white/10">
-                <div className="text-2xl font-black text-white flex justify-center items-center gap-1"><Trophy size={20} className="text-yellow-400"/> No.1</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">ยอดนิยม</div>
-             </div>
+          {/* 🔥 Trust Stats (เพิ่มความน่าเชื่อถือสูงสุด) 🔥 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
+             <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
+             <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
+             <StatBox icon={Trophy} label="อันดับยอดขาย" value="No. 1" color="yellow" />
+             <StatBox icon={Activity} label="สถานะเซิร์ฟเวอร์" value="Online" color="purple" />
           </div>
-
         </div>
+      </div>
+
+      {/* 🔥 WHY CHOOSE US (เพิ่มโซนจุดเด่น) 🔥 */}
+      <div className="max-w-7xl mx-auto px-6 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FeatureCard icon={Clock} title="จัดส่งอัตโนมัติ" desc="ได้รับสินค้าทันทีภายใน 1 นาที ด้วยระบบ AI อัจฉริยะ ตลอด 24 ชม." color="yellow" />
+              <FeatureCard icon={ShieldCheck} title="รับประกันสินค้า" desc="สินค้าทุกชิ้นผ่านการตรวจสอบ มั่นใจได้ 100% มีปัญหาเคลมฟรี" color="green" />
+              <FeatureCard icon={Headphones} title="ซัพพอร์ตมืออาชีพ" desc="ทีมงานพร้อมดูแลและแก้ปัญหาให้คุณตลอดเวลา ไม่ทิ้งลูกค้า" color="cyan" />
+          </div>
       </div>
 
       {/* PRODUCT GRID */}
@@ -247,15 +246,45 @@ export default function Home({ products }) {
       </main>
 
       <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">© 2025 All rights reserved.</p></footer>
+      
+      {/* Styles & Keyframes */}
       <style jsx>{`
         .perspective-container { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
-        .cyber-grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px); background-size: 40px 40px; transform: rotateX(60deg); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); }
         .animate-gridMove { animation: gridMove 1s linear infinite; }
         @keyframes gridMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(40px); } }
       `}</style>
     </div>
   );
+}
+
+// Components ย่อยสำหรับความสวยงาม
+function StatBox({ icon: Icon, label, value, color }) {
+    const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
+    return (
+        <div className="bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md flex flex-col items-center justify-center hover:bg-white/10 transition-all">
+            <Icon size={24} className={`${colors[color]} mb-2`} />
+            <div className="text-2xl font-black text-white">{value}</div>
+            <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
+        </div>
+    );
+}
+
+function FeatureCard({ icon: Icon, title, desc, color }) {
+    const colors = { 
+        cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30', 
+        green: 'bg-green-500/10 text-green-400 border-green-500/30', 
+        yellow: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' 
+    };
+    return (
+        <div className={`p-6 rounded-2xl border ${colors[color].split(' ')[2]} bg-[#0a0a0a] hover:-translate-y-1 transition-transform duration-300`}>
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}>
+                <Icon size={24} />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+            <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
+        </div>
+    );
 }
 
 export async function getServerSideProps() {
