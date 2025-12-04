@@ -66,7 +66,7 @@ export default function Home({ products, categories }) {
         <div className="absolute inset-0 bg-[#020202]"></div>
         
         {/* Cyber Grid Animation (เพิ่มตรงนี้) */}
-        <div className="cyber-grid opacity-20"></div>
+        <div className="cyber-grid opacity-40"></div>
         
         {/* Floating Orbs (ของเดิม) */}
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-[-20%] left-[20%] w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[150px]" />
@@ -194,8 +194,8 @@ export default function Home({ products, categories }) {
           </motion.div>
           
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
-             <StatBox icon={Users} label="ผู้ใช้งาน" value="50,000+" color="cyan" />
+         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto mt-12">
+             <StatBox icon={Users} label="ผู้ใช้งาน" value="50K+" color="cyan" />
              <StatBox icon={CheckCircle} label="ความปลอดภัย" value="100%" color="green" />
              <StatBox icon={Trophy} label="อันดับยอดขาย" value="No. 1" color="yellow" />
              <StatBox icon={Activity} label="สถานะเซิร์ฟเวอร์" value="Online" color="purple" />
@@ -300,7 +300,7 @@ export default function Home({ products, categories }) {
         )}
       </main>
 
-      <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">© 2025 All rights reserved.</p></footer>
+      <footer className="border-t border-cyan-900/30 bg-[#020202] py-16 text-center"><h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 mb-4">NEONSTORE SYSTEMS</h2><p className="text-gray-500 text-xs">MADE IN NEONSTORE.</p></footer>
       
       {/* Styles */}
       <style jsx>{`
@@ -309,12 +309,42 @@ export default function Home({ products, categories }) {
         .perspective-container { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         
-        /* 🔥 Cyber Grid + Scanlines 🔥 */
-        .cyber-grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px); background-size: 40px 40px; transform: rotateX(60deg); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); animation: gridMove 20s linear infinite; }
-        .scanlines { background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1)); background-size: 100% 4px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 10; }
-        
+        /* 🔥 ปรับปรุง Grid ให้คมชัดขึ้น (เพิ่ม opacity เป็น 0.1) 🔥 */
+        .cyber-grid { 
+            position: absolute; 
+            width: 200%; height: 200%; 
+            top: -50%; left: -50%; 
+            background-image: linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px); 
+            background-size: 50px 50px; 
+            transform: rotateX(60deg); 
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); 
+            animation: gridMove 20s linear infinite; 
+            z-index: -1; 
+        }
+
+        /* 🔥 ปรับ Scanlines ให้จางลงเพื่อไม่รกตา 🔥 */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.05) 50%, 
+                rgba(0,0,0,0.05)
+            );
+            background-size: 100% 3px; 
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none; 
+            z-index: 10; 
+            mix-blend-mode: overlay; 
+        }
+
         .animate-gridMove { animation: gridMove 1s linear infinite; }
-        @keyframes gridMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(40px); } }
+        @keyframes gridMove { 
+            0% { transform: rotateX(60deg) translateY(0); } 
+            100% { transform: rotateX(60deg) translateY(50px); } 
+        }
       `}</style>
     </div>
   );
@@ -324,13 +354,13 @@ export default function Home({ products, categories }) {
 function StatBox({ icon: Icon, label, value, color }) {
     const colors = { cyan: 'text-cyan-400', green: 'text-green-400', yellow: 'text-yellow-400', purple: 'text-purple-400' };
     return (
-        <div className="bg-[#0f0f0f] border border-white/5 p-6 rounded-3xl flex flex-col items-center justify-center hover:border-white/10 transition-all hover:-translate-y-2 duration-300 shadow-lg group relative overflow-hidden">
+        <div className="bg-[#0f0f0f] border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center hover:border-white/10 transition-all hover:-translate-y-1 duration-300 shadow-lg group relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className={`p-3 rounded-2xl bg-white/5 mb-3 group-hover:bg-white/10 transition-colors ${colors[color]} bg-opacity-10`}>
-                 <Icon size={28} />
+            <div className={`p-2.5 rounded-xl bg-white/5 mb-2 group-hover:bg-white/10 transition-colors ${colors[color]} bg-opacity-10`}>
+                 <Icon size={20} />
             </div>
-            <div className="text-3xl font-black text-white mb-1 drop-shadow-md">{value}</div>
-            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-bold">{label}</div>
+            <div className="text-xl font-black text-white mb-0.5 drop-shadow-md">{value}</div>
+            <div className="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold">{label}</div>
         </div>
     );
 }
