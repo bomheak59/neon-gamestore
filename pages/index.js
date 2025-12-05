@@ -363,4 +363,4 @@ export async function getServerSideProps() {
     
     return { props: { products: JSON.parse(JSON.stringify(products)), categories: JSON.parse(JSON.stringify(categories)) } };
   } catch (e) { return { props: { products: [], categories: [] } }; }
-}
+} 
